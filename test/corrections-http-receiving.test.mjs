@@ -233,3 +233,33 @@ for (const stage of ["transport", "status", "url", "body"]) {
     );
   });
 }
+
+test('malformed origin without disclosing private token or touching network',async()=>{
+  const sentinel='PRIVATE_PROVIDER_CONTENT_DO_NOT_PUBLISH';
+  let fetches=0;
+  const fetcher=async()=>{ fetches++; throw new Error('network should be unused'); };
+  for(const origin of ['https://['+sentinel+'/',{toString(){throw new Error(sentinel);}}]){
+    await assert.rejects(()=>verify(origin,{fetcher}),error=>{
+      assert.equal(error.message,'CORRECTIONS_NOT_RECEIVED: requires an HTTPS origin root');
+      assert.equal(error.message.includes(sentinel),false);
+      assert.equal(Object.hasOwn(error,'diagnostics'),false);
+      return true;
+    });
+  }
+  assert.equal(fetches,0);
+});
+
+test('CLI malformed origin preserves fixed refusal without echoing supplied URL',()=>{
+  const sentinel='PRIVATE_PROVIDER_CONTENT_DO_NOT_PUBLISH';
+  const script=new URL('../scripts/verify-corrections-receiving.mjs',import.meta.url);
+  const program=`process.argv[1]=${JSON.stringify(fileURLToPath(script))};
+    process.argv[2]=${JSON.stringify('https://['+sentinel+'/')};
+    globalThis.fetch=async()=>{throw new Error('unexpected network call');};
+    await import(${JSON.stringify(script.href)});`;
+  const run=spawnSync(process.execPath,['--input-type=module','-e',program],{encoding:'utf8',timeout:5000});
+  assert.equal(run.error,undefined);
+  assert.equal(run.status,1);
+  assert.equal(run.stdout,'');
+  assert.equal(run.stderr,'CORRECTIONS_NOT_RECEIVED: requires an HTTPS origin root\n');
+  assert.equal(run.stderr.includes(sentinel),false);
+});

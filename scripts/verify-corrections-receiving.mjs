@@ -22,7 +22,11 @@ const esc = value => String(value).replaceAll('&','&amp;').replaceAll('<','&lt;'
   .replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
 
 export async function verifyCorrectionsReceiving(origin,{fetcher=globalThis.fetch}={}) {
-  const root=new URL(origin);
+  // Provider-supplied or operator-pasted invalid origins can embed private tokens.
+  // URL's own TypeError may repeat that input; emit only our original fixed refusal.
+  let root;
+  try { root=new URL(origin); }
+  catch { fail('requires an HTTPS origin root'); }
   if(root.protocol!=='https:'||root.pathname!=='/'||root.search||root.hash||root.username||root.password)
     fail('requires an HTTPS origin root');
   const paths={'manifest.json':'/manifest.json','corrections.json':'/corrections.json',

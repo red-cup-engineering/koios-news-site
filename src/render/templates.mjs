@@ -193,13 +193,15 @@ function siteFooter(property, options = {}) {
 export function documentShell(property, headCtx, bodyHtml, options = {}) {
   const stylesheet = options.stylesheetHref ?? "/assets/site.css";
   const lang = property.language ?? "en";
+  const pageHead = headCtx.ogType === "article" || headCtx.ogImage ? headCtx
+    : { ...headCtx, ogImage: absoluteUrl(property.origin, "/og.png"), ogImageWidth: 1200, ogImageHeight: 675 };
   return `<!doctype html>
 <html lang="${esc(lang)}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="${esc(stylesheet)}">
-${renderHeadTags({ ...headCtx, ogImage: headCtx.ogImage ?? absoluteUrl(property.origin, "/og.png"), ogImageWidth: 1200, ogImageHeight: 675 })}
+${renderHeadTags(pageHead)}
 </head>
 <body>
 <a class="skip-to-content" href="#main-content">Skip to content</a>
@@ -225,7 +227,7 @@ ${options.shareLinks ? '<script src="/assets/share.js" defer></script>\n' : ""}$
 export function storyCard(post, options = {}) {
   const cls = options.lead ? "story story--lead" : "story";
   const image = options.showImage !== false && post.image
-    ? `<a class="story__image" href="/posts/${esc(post.slug)}/"><img src="${esc(post.image)}" alt="${esc(post.imageAlt ?? "")}"></a>`
+    ? `<a class="story__image" href="/posts/${esc(post.slug)}/"><img src="${esc(post.image)}" alt="${esc(post.imageAlt ?? "")}"${post.imageWidth && post.imageHeight ? ` width="${post.imageWidth}" height="${post.imageHeight}"` : ""} loading="lazy" decoding="async"></a>`
     : "";
   return `<article class="${cls}">${image}` +
     `<span class="story__kicker"><a href="/sections/${esc(post.section)}/">${esc(post.sectionTitle)}</a></span>` +
@@ -377,9 +379,21 @@ function renderArticleRights(post) {
     : "";
 }
 
+/** One selected image, carrying only that asset's text alternative and credit. */
+function articleFigure({ src, alt, width, height, caption, credit }, { priority = false } = {}) {
+  if (!src) return "";
+  return `<figure class="article-hero"><img src="${esc(src)}" alt="${esc(alt ?? "")}"` +
+    (width && height ? ` width="${width}" height="${height}"` : "") +
+    (priority ? ` fetchpriority="high"` : ` loading="lazy"`) + ` decoding="async">` +
+    (caption || credit ? `<figcaption>${[caption, credit].filter(Boolean).map(esc).join(" ")}</figcaption>` : "") + `</figure>`;
+}
+
 /** The article a subscriber reads, carrying the page's editorial context. */
 export function renderSyndicatedArticle(property, post) {
-  return (post.dek ? `<p>${esc(post.dek)}</p>` : "") + post.bodyHtml +
+  const image = articleFigure({ src: post.ogImage, alt: post.ogImageAlt,
+    width: post.ogImageWidth, height: post.ogImageHeight,
+    caption: post.ogImageCaption, credit: post.ogImageCredit });
+  return (post.dek ? `<p>${esc(post.dek)}</p>` : "") + image + post.bodyHtml +
     renderLedgers(post.claims, post.omissions) + renderCorrectionNotice(post.corrections) +
     `<p>Published by ${esc(property.name)}: <a href="${esc(url(property, `/posts/${post.slug}/`))}">${esc(post.title)}</a>.</p>` +
     renderArticleRights(post);
@@ -462,10 +476,9 @@ export function renderArticlePage({ property, post: bare, allPosts, verification
   const articleUrl = url(property, `/posts/${post.slug}/`);
   const authorPath = authorPathFor(property, post);
   const profile = authorProfile(property, post.authorSlug);
-  const hero = post.image
-    ? `<figure class="article-hero"><img src="${esc(post.image)}" alt="${esc(post.imageAlt ?? "")}" width="1200" height="675" fetchpriority="high" decoding="async">` +
-      (post.imageCredit ? `<figcaption>${esc(post.imageCredit)}</figcaption>` : "") + `</figure>`
-    : "";
+  const hero = articleFigure({ src: post.image, alt: post.imageAlt,
+    width: post.imageWidth, height: post.imageHeight,
+    caption: post.imageCaption, credit: post.imageCredit }, { priority: true });
   const rights = renderArticleRights(post);
   const tags = (post.tags ?? []).length > 0
     ? `<p class="tags">${post.tags.map((tag) => `<a href="/tags/${esc(slugify(tag))}/">${esc(tag)}</a>`).join("")}</p>`
@@ -501,8 +514,6 @@ export function renderArticlePage({ property, post: bare, allPosts, verification
     renderCorrectionNotice(post.corrections) +
     rights +
     `</article>`;
-  const rasterHero = post.image && /\.(?:png|jpe?g|webp|avif)$/iu.test(post.image) && !post.image.startsWith("/fingerprints/")
-    ? [{ url: url(property, post.image) }] : [];
   const headCtx = {
     title: documentTitle(post.title, property.name),
     socialTitle: post.title,
@@ -512,9 +523,9 @@ export function renderArticlePage({ property, post: bare, allPosts, verification
     ogType: "article",
     locale: property.locale,
     ogImage: post.ogImage,
-    ogImageAlt: post.ogImage === absoluteUrl(property.origin, `/fingerprints/${post.slug}.png`)
-      ? "Article-specific geometric mark derived from the accompanying facts record."
-      : (post.ogImage === post.image ? post.imageAlt : undefined),
+    ogImageAlt: post.ogImageAlt,
+    ogImageWidth: post.ogImageWidth,
+    ogImageHeight: post.ogImageHeight,
     noindex: noindex || Boolean(verificationArticleUnit),
     articlePublishedTime: post.publishedInstant,
     articleModifiedTime: post.modifiedInstant,
@@ -527,7 +538,7 @@ export function renderArticlePage({ property, post: bare, allPosts, verification
       headline: post.title,
       url: articleUrl,
       image: post.ogImage,
-      images: [...rasterHero, ...(post.schemaImages ?? [])],
+      images: post.schemaImages,
       datePublished: post.publishedInstant,
       dateModified: post.modifiedInstant,
       author: {

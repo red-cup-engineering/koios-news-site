@@ -1,15 +1,17 @@
 /** @module images -- news-property image domain: OG card composition, hero prompts, per-article image custody. */
 
 import { mkdir, writeFile, access } from "node:fs/promises";
+import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import sharp from "sharp";
 
 const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
-const HEADLINE_MEASURE_CHARS = 22;
-const HEADLINE_FONT_SIZE = 64;
-const HEADLINE_LINE_HEIGHT = 74;
-const HEADLINE_MAX_LINES = 3;
+const HEADLINE_MEASURE_CHARS = 32;
+const HEADLINE_FONT_SIZE = 56;
+const HEADLINE_LINE_HEIGHT = 68;
+const HEADLINE_MAX_LINES = 4;
 const KICKER_FONT_SIZE = 26;
 const FOOTER_FONT_SIZE = 24;
 const MARGIN = 80;
@@ -128,13 +130,12 @@ ${footerMarkup}
  * wrapped at a fixed measure, an optional kicker and property name, an
  * optional wordmark, over a hero image when given or a flat palette-surface
  * panel otherwise. Pure encoding -- no inference.
- * @param {{headline:string, kicker?:string, propertyName?:string, wordmarkSvg?:string, palette?:object, heroImagePath?:string, out:string}} opts
- * @returns {Promise<{path:string, width:number, height:number}>}
- * @throws {Error} when headline or out is missing
+ * @param {{headline:string, kicker?:string, propertyName?:string, wordmarkSvg?:string, palette?:object, heroImagePath?:string}} opts
+ * @returns {Promise<{buffer:Buffer, width:number, height:number}>}
+ * @throws {Error} when headline is missing
  */
-export async function composeOgCard({ headline, kicker, propertyName, wordmarkSvg, palette, heroImagePath, out }) {
+export async function renderOgCard({ headline, kicker, propertyName, wordmarkSvg, palette, heroImagePath }) {
   if (!headline) throw new Error("composeOgCard requires headline");
-  if (!out) throw new Error("composeOgCard requires out");
 
   const hasHero = Boolean(heroImagePath);
   const base = hasHero
@@ -161,14 +162,93 @@ export async function composeOgCard({ headline, kicker, propertyName, wordmarkSv
     }
   }
 
-  await mkdir(path.dirname(out), { recursive: true });
   const buffer = await base
     .composite(layers)
     .png({ compressionLevel: 9, adaptiveFiltering: false })
     .toBuffer();
-  await writeFile(out, buffer);
+  return { buffer, width: OG_WIDTH, height: OG_HEIGHT };
+}
 
-  return { path: out, width: OG_WIDTH, height: OG_HEIGHT };
+/** The existing effectful file entrance consumes the same card composition. */
+export async function composeOgCard({ out, ...options }) {
+  if (!options.headline) throw new Error("composeOgCard requires headline");
+  if (!out) throw new Error("composeOgCard requires out");
+  const { buffer, width, height } = await renderOgCard(options);
+  await mkdir(path.dirname(out), { recursive: true });
+  await writeFile(out, buffer);
+  return { path: out, width, height };
+}
+
+const rasterPath = /\.(?:png|jpe?g|webp|avif)$/iu;
+const hash = value => createHash("sha256").update(value).digest("hex");
+
+/** Receive an existing public image from the publication's own content root.
+ * No URL is fetched and no unselected content directory is copied to the site.
+ */
+export function readPublicationImage(value, { origin, contentRoot }) {
+  const refuse = () => { throw new TypeError("Publication images require an existing same-origin raster asset inside /assets/"); };
+  if (typeof value !== "string" || !value || /[\\\s\u0000-\u001f\u007f%]/u.test(value)) refuse();
+  let url, home;
+  try { home = new URL(origin); url = new URL(value, home); } catch { refuse(); }
+  if (home.protocol !== "https:" || url.origin !== home.origin || url.protocol !== "https:" ||
+      url.username || url.password || url.search || url.hash || !url.pathname.startsWith("/assets/") ||
+      !rasterPath.test(url.pathname) || value.split("/").some(part => part === "." || part === "..")) refuse();
+  const root = realpathSync(contentRoot), relativePath = url.pathname.slice(1), target = path.resolve(root, relativePath);
+  if (!existsSync(target)) refuse();
+  const actual = realpathSync(target), relative = path.relative(root, actual);
+  if (!relative || relative === ".." || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative) || !statSync(actual).isFile()) refuse();
+  return Object.freeze({ path: relativePath, url: url.href, bytes: readFileSync(actual) });
+}
+
+/** Select existing editorial media; fingerprint marks remain provenance assets. */
+export function selectPublicationImages({ post, property, contentRoot, prepared }) {
+  const read = value => readPublicationImage(value, { origin: property.origin, contentRoot });
+  const fallback = `/assets/article-art/${post.slug}.svg`;
+  const hero = post.image && post.image !== fallback ? read(post.image) : undefined;
+  const card = `assets/og/${post.slug}.png`;
+  const social = existsSync(path.join(contentRoot, card)) ? read(`/${card}`)
+    : hero ?? (property.images?.defaultOgImage ? read(property.images.defaultOgImage) : undefined);
+  if (prepared === undefined) return { hero, social };
+  const same = (left, right) => left === undefined ? right === undefined
+    : right !== undefined && left.url === right.url && left.bytes.equals(right.bytes);
+  if (prepared.sourceDigest !== post.sourceDigest || !same(hero, prepared.inputHero) || !same(social, prepared.inputSocial))
+    throw new Error("Article or image inputs changed during media preparation");
+  return { hero: prepared.hero, social: prepared.social };
+}
+
+/** Original Sharp composition supplies measured media before the builder seals it.
+ * Inputs are already admitted published posts; this does not edit their source,
+ * obtain photos, invoke inference, or change their publication authority.
+ */
+export async function prepareArticleMedia({ posts, property, contentRoot, palette }) {
+  const prepared = new Map();
+  const measured = async image => {
+    if (!image) return undefined;
+    const metadata = await sharp(image.bytes).metadata();
+    const format = metadata.format === "heif" && metadata.compression === "av1" ? "avif" : metadata.format;
+    const extension = path.extname(image.path).slice(1).toLowerCase().replace(/^jpg$/u, "jpeg");
+    const { width, height } = metadata.autoOrient;
+    if (!["png", "jpeg", "webp", "avif"].includes(format) || format !== extension ||
+        !Number.isSafeInteger(width) || width < 1 || !Number.isSafeInteger(height) || height < 1)
+      throw new TypeError("Publication image must decode as a raster with measured dimensions");
+    return { ...image, width, height };
+  };
+  for (const post of posts) {
+    const input = selectPublicationImages({ post, property, contentRoot });
+    const hero = await measured(input.hero);
+    let social = input.social?.url === input.hero?.url && hero ? hero : await measured(input.social);
+    if (!social) {
+      const card = await renderOgCard({ headline: post.title, kicker: post.sectionTitle,
+        propertyName: property.name, palette });
+      const outputPath = `assets/og/${post.slug}.${hash(card.buffer).slice(0, 16)}.png`;
+      social = { path: outputPath, url: new URL(`/${outputPath}`, property.origin).href,
+        bytes: card.buffer, width: card.width, height: card.height, alt: `Headline card: ${post.title}`,
+        caption: "Headline graphic; no documentary image accompanies this report." };
+    }
+    prepared.set(post.slug, { sourceDigest: post.sourceDigest, inputHero: input.hero,
+      inputSocial: input.social, hero, social });
+  }
+  return prepared;
 }
 
 /**

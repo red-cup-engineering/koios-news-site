@@ -49,14 +49,16 @@ export function absoluteUrl(origin, path) {
 export function socialMetaTags(ctx) {
   return pageSocialMetaTags({
     type: ctx.ogType ?? "website", siteName: ctx.siteName, title: ctx.socialTitle ?? ctx.title, description: ctx.description, url: ctx.canonical, locale: ctx.locale,
-    ...(ctx.ogImage ? { images: [{ url: ctx.ogImage, ...(ctx.ogImageAlt ? { alt: ctx.ogImageAlt } : {}), width: ctx.ogImageWidth ?? 1200, height: ctx.ogImageHeight ?? 630 }] } : {}),
+    ...(ctx.ogImage ? { images: [{ url: ctx.ogImage, ...(ctx.ogImageAlt ? { alt: ctx.ogImageAlt } : {}),
+      ...(ctx.ogImageWidth ? { width: ctx.ogImageWidth } : {}), ...(ctx.ogImageHeight ? { height: ctx.ogImageHeight } : {}) }] } : {}),
     publishedTime: ctx.articlePublishedTime, modifiedTime: ctx.articleModifiedTime, section: ctx.articleSection, tags: ctx.articleTags,
   });
 }
 
 /** An ImageObject node; width and height only when they are known facts. */
 function imageObject(image) {
-  return { "@type": "ImageObject", url: image.url, ...(image.width ? { width: image.width } : {}), ...(image.height ? { height: image.height } : {}) };
+  return { "@type": "ImageObject", url: image.url, ...(image.width ? { width: image.width } : {}),
+    ...(image.height ? { height: image.height } : {}), ...(image.creditText ? { creditText: image.creditText } : {}) };
 }
 
 /**
@@ -65,7 +67,7 @@ function imageObject(image) {
  * @param {string} input.headline
  * @param {string} input.url
  * @param {string} [input.image] absolute image URL
- * @param {{url:string,width?:number,height?:number}[]} [input.images] ImageObject crops (1x1, 4x3, 16x9); wins over `image`
+ * @param {{url:string,width?:number,height?:number,creditText?:string}[]} [input.images] Selected article images; wins over `image`
  * @param {string} input.datePublished ISO 8601 instant with zone
  * @param {string} input.dateModified ISO 8601 instant with zone
  * @param {{name:string,url?:string,type?:string,jobTitle?:string,description?:string,sameAs?:string[]}} input.author

@@ -4,11 +4,19 @@ import { readFileSync, realpathSync } from "node:fs";
 import { basename, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildProperty, declaredPropertyInputs, parsePost } from "../src/build.mjs";
+import { buildProperty, buildPropertyWithMedia, declaredPropertyInputs, parsePost } from "../src/build.mjs";
 export function buildConfiguredProperty(configPath, outputDir, { asOf } = {}) {
   const absoluteConfig = resolve(configPath);
   const property = JSON.parse(readFileSync(absoluteConfig, "utf8"));
   return buildProperty({ property, ...declaredPropertyInputs(property, dirname(absoluteConfig)), outputDir: resolve(outputDir), ...(asOf === undefined ? {} : { asOf }) });
+}
+
+/** The production entrance receives measured article media before sealing. */
+export async function buildConfiguredPropertyWithMedia(configPath, outputDir, { asOf } = {}) {
+  const absoluteConfig = resolve(configPath);
+  const property = JSON.parse(readFileSync(absoluteConfig, "utf8"));
+  return buildPropertyWithMedia({ property, ...declaredPropertyInputs(property, dirname(absoluteConfig)),
+    outputDir: resolve(outputDir), ...(asOf === undefined ? {} : { asOf }) });
 }
 
 function buildInstant(value) {
@@ -40,7 +48,7 @@ if (isMainModule()) {
     process.stderr.write("usage: news-property-build <property.json> <public-directory> [--as-of <canonical-UTC-instant>] | --check-post <post.md>\n");
     process.exitCode = 1;
   } else {
-    try { process.stdout.write(`${JSON.stringify(buildConfiguredProperty(configPath, outputDir, options.length ? { asOf: buildInstant(options[1]) } : {}))}\n`); }
+    try { process.stdout.write(`${JSON.stringify(await buildConfiguredPropertyWithMedia(configPath, outputDir, options.length ? { asOf: buildInstant(options[1]) } : {}))}\n`); }
     catch (error) { process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`); process.exitCode = 1; }
   }
 }

@@ -16,7 +16,8 @@ import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 
 import { buildTheme } from "./render/theme.mjs";
 import { renderArticleArtSvg, articleArtAlt } from "./render/article-art.mjs";
-import { renderArticleFingerprint, renderBrandPng, renderBrandLogoPng, fingerprintCropImages } from "./render/article-fingerprint.mjs";
+import { renderArticleFingerprint, renderBrandPng, renderBrandLogoPng } from "./render/article-fingerprint.mjs";
+import { prepareArticleMedia, selectPublicationImages } from "./images.mjs";
 import { renderCoverage, renderNinjs, renderPublicationProvenance, renderSourceRoll } from "./render/public-records.mjs";
 import { renderMarkdown, renderArticleMarkdown, escapeHtml } from "./render/markdown.mjs";
 import { faviconSvg, webManifest, absoluteUrl } from "./render/head.mjs";
@@ -569,22 +570,28 @@ function assetHeaders(property) {
 ` + articlePrice + immutable;
 }
 
-/**
- * Resolve an article's Open Graph card: `/assets/og/<slug>.png` when the
- * content root's assets carry it, else the property's configured default,
- * else the article's hero image. Image files are never generated here — per
- * the specification's images section, that is a hero/OG-composition
- * responsibility elsewhere in the app.
- * @param {object} post
- * @param {object} property
- * @param {string} contentDir
- * @returns {string|undefined} absolute URL, or undefined when nothing is available
+function propertyPosts({ property, contentDir, publishedPostsDir }) {
+  return readPosts(resolve(contentDir), property.content?.legacyPublishedSections,
+    property.content?.postsDirectory ?? "posts", property.content?.defaultPublishedSection,
+    publishedPostsDir, property.content?.editorialProjections, property.content?.requirePublishedLedger === true);
+}
+
+/** Prepare article images through the original image owner before the same
+ * synchronous renderer seals its complete output. No manuscript is changed.
  */
-function resolveOgImage(post, property, contentDir) {
-  const perArticle = join(contentDir, "assets", "og", `${post.slug}.png`);
-  if (existsSync(perArticle)) return absoluteUrl(property.origin, `/assets/og/${post.slug}.png`);
-  if (property.images?.defaultOgImage) return absoluteUrl(property.origin, property.images.defaultOgImage);
-  return absoluteUrl(property.origin, `/fingerprints/${post.slug}.png`);
+export async function buildPropertyWithMedia(options) {
+  const input = { ...options, property: structuredClone(options.property),
+    ...(options.asOf === undefined ? {} : { asOf: new Date(options.asOf) }) };
+  const { property, contentDir } = input;
+  const sections = new Map((property.sections ?? []).map(section => [section.slug, section]));
+  const posts = propertyPosts(input).map(post => {
+    const section = sections.get(post.section);
+    if (!section) throw new Error(`${post.file}: unknown section "${post.section}"`);
+    return { ...post, ...selectArticleHeroImage(post, section.title, articleArtAlt), sectionTitle: section.title };
+  });
+  const preparedArticleMedia = await prepareArticleMedia({ posts, property, contentRoot: contentDir,
+    palette: buildTheme(property.theme).seeds });
+  return buildProperty({ ...input, preparedArticleMedia });
 }
 
 /**
@@ -631,26 +638,44 @@ export function propertyStateRoot(property, environment = process.env) {
   return join(environment.XDG_STATE_HOME || join(homedir(), ".local", "state"), "561-group", "news-property", property.name);
 }
 
-export function buildProperty({ property, contentDir, outputDir, claimStoreDir, sourceFeedsPath, publishedPostsDir, publicationEvidenceDir, asOf = new Date() }) {
+export function buildProperty({ property, contentDir, outputDir, claimStoreDir, sourceFeedsPath, publishedPostsDir, publicationEvidenceDir, preparedArticleMedia, asOf = new Date() }) {
   if (typeof property !== "object" || property === null) throw new TypeError("property is required");
   if (typeof contentDir !== "string" || typeof outputDir !== "string") throw new TypeError("contentDir and outputDir are required");
   const postsDirectory = property.content?.postsDirectory ?? "posts";
   const recordNamespace = property.records?.namespace ?? "news-property";
   if (typeof recordNamespace !== "string" || !/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/u.test(recordNamespace)) throw new TypeError("property.records.namespace is invalid");
   const recordKind = (name) => `${recordNamespace}.${name}/v1`;
-  const posts = readPosts(resolve(contentDir), property.content?.legacyPublishedSections, postsDirectory, property.content?.defaultPublishedSection, publishedPostsDir, property.content?.editorialProjections, property.content?.requirePublishedLedger === true);
+  const posts = propertyPosts({ property, contentDir, publishedPostsDir });
+  if (preparedArticleMedia !== undefined && (!(preparedArticleMedia instanceof Map) ||
+      preparedArticleMedia.size !== posts.length || posts.some(post => !preparedArticleMedia.has(post.slug))))
+    throw new Error("Prepared media must cover the same admitted publication posts");
   const sections = new Map((property.sections ?? []).map((section) => [section.slug, section]));
   const publicationEvidence = readPublicationEvidence(publicationEvidenceDir);
   const enriched = posts.map((post) => {
     const section = sections.get(post.section);
     if (section === undefined) throw new Error(`${post.file}: unknown section "${post.section}"`);
     const hero = selectArticleHeroImage(post, section.title, articleArtAlt);
+    const media = selectPublicationImages({ post: { ...post, ...hero }, property, contentRoot: contentDir,
+      prepared: preparedArticleMedia?.get(post.slug) });
+    const descriptiveHero = media.hero ? { ...media.hero, alt: hero.imageAlt, creditText: hero.imageCredit } : undefined;
+    const social = media.social && descriptiveHero && media.social.bytes.equals(descriptiveHero.bytes)
+      ? { ...media.social, alt: descriptiveHero.alt, creditText: descriptiveHero.creditText } : media.social;
+    const schemaImages = [...new Map([descriptiveHero, social].filter(Boolean)
+      .map(image => [image.url, { url: image.url, width: image.width, height: image.height,
+        ...(image.creditText ? { creditText: image.creditText } : {}) }])).values()];
     return {
       ...post,
       ...hero,
+      image: media.hero ? `/${media.hero.path}` : hero.image,
       ...resolvePublicationInstants(post, publicationEvidence.get(post.slug)),
       sectionTitle: section.title,
-      ogImage: resolveOgImage({ ...post, image: hero.image }, property, contentDir),
+      mediaFiles: [media.hero, media.social].filter(Boolean), schemaImages,
+      imageWidth: descriptiveHero?.width ?? (media.hero ? undefined : 1200),
+      imageHeight: descriptiveHero?.height ?? (media.hero ? undefined : 675),
+      imageCaption: media.hero ? undefined : "Headline graphic; no documentary image accompanies this report.",
+      ogImage: social?.url, ogImageAlt: social?.alt,
+      ogImageWidth: social?.width, ogImageHeight: social?.height,
+      ogImageCaption: social?.caption, ogImageCredit: social?.creditText,
     };
   });
 
@@ -716,6 +741,11 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
   set("logo.png", renderBrandLogoPng(property));
   set("manifest.webmanifest", `${JSON.stringify(webManifest({ name: property.name, accent: theme.seeds.accent, surface: theme.seeds.surface }), null, 2)}\n`);
   for (const post of enriched) {
+    for (const media of post.mediaFiles) {
+      if (files.has(media.path) && !Buffer.from(files.get(media.path)).equals(media.bytes))
+        throw new Error("Selected publication image has conflicting bytes");
+      set(media.path, media.bytes);
+    }
     if (post.image === `/assets/article-art/${post.slug}.svg`) {
       set(`assets/article-art/${post.slug}.svg`, renderArticleArtSvg({
         title: post.title,
@@ -727,7 +757,6 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
     }
     const fingerprint = renderArticleFingerprint(post, property);
     for (const [path, contents] of fingerprint) set(path, contents);
-    post.schemaImages = fingerprintCropImages(fingerprint, post.slug, property.origin);
   }
   set("coverage.json", renderCoverage(enriched, property));
   set("ninjs.json", renderNinjs(enriched, property, citationRenderer));

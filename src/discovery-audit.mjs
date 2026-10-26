@@ -10,6 +10,7 @@
 const standards = Object.freeze({
   search: "https://developers.google.com/search/docs/appearance/ai-features",
   article: "https://developers.google.com/search/docs/appearance/structured-data/article",
+  headings: "https://www.w3.org/WAI/tutorials/page-structure/headings/",
   sitemap: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview",
   news: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap",
   crawl: "https://developers.cloudflare.com/ai-crawl-control/features/pay-per-crawl/what-is-pay-per-crawl/",
@@ -285,6 +286,16 @@ export async function auditDiscovery({ origin, fetchImpl = fetch, observedAt = n
     "Home declares the canonical HTTPS origin", "search", { found: canonicalLink(results.home.body) }, true);
   record("home-indexable", stateIf("home", !/\bnoindex\b/iu.test(meta(results.home.body, "robots") ?? "")),
     "Home does not declare noindex", "search", { found: meta(results.home.body, "robots") }, true);
+  // This is a source-HTML structure observation, not a ranking or complete
+  // accessibility verdict. Ignore inert text that happens to contain tags.
+  const headingMarkup = results.home.body
+    .replace(/<!--[\s\S]*?-->/gu, "")
+    .replace(/<(script|style|template)\b[^>]*>[\s\S]*?<\/\1\s*>/giu, "");
+  const primaryHeadings = [...headingMarkup.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1\s*>/giu)]
+    .map((match) => match[1].replace(/<[^>]*>/gu, "").trim()).filter(Boolean);
+  record("home-primary-heading", stateIf("home", primaryHeadings.length > 0),
+    "Home declares a nonempty primary heading for its content; source markup alone does not prove accessibility or search placement",
+    "headings", { count: primaryHeadings.length });
   const homeLd = jsonLd(results.home.body);
   const hasOrganization = homeLd.objects.some((item) =>
     isType(item, "NewsMediaOrganization") || isType(item, "Organization"));

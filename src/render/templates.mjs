@@ -224,12 +224,13 @@ ${options.shareLinks ? '<script src="/assets/share.js" defer></script>\n' : ""}$
  */
 export function storyCard(post, options = {}) {
   const cls = options.lead ? "story story--lead" : "story";
+  const heading = options.lead ? "h1" : "h2";
   const image = options.showImage !== false && post.image
     ? `<a class="story__image" href="/posts/${esc(post.slug)}/"><img src="${esc(post.image)}" alt="${esc(post.imageAlt ?? "")}"></a>`
     : "";
   return `<article class="${cls}">${image}` +
     `<span class="story__kicker"><a href="/sections/${esc(post.section)}/">${esc(post.sectionTitle)}</a></span>` +
-    `<h2 class="story__head"><a href="/posts/${esc(post.slug)}/">${esc(post.title)}</a></h2>` +
+    `<${heading} class="story__head"><a href="/posts/${esc(post.slug)}/">${esc(post.title)}</a></${heading}>` +
     `<p class="story__sum">${esc(post.description)}</p>` +
     `<p class="story__meta"><time datetime="${esc(postInstants(post).publishedInstant)}">${esc(publicationLabel(post))}</time> · ${esc(post.author)}</p></article>`;
 }
@@ -278,7 +279,7 @@ export function renderHomePage({ property, posts, mostRead, asOf }) {
     adSlot(property, "header"),
     lead ? `<section class="front-page" aria-label="Featured and latest reporting"><div class="front-page__lead">${storyCard(lead, { lead: true })}</div>` +
       `<aside class="front-page__latest" aria-label="Latest reports"><h2>Latest reports</h2>${front.slice(1, 5).map(post => storyCard(post, {showImage:false})).join("")}</aside></section>` :
-      `<p>No reports published in the past 30 days. <a href="/archive/">Browse the archive</a>.</p>`,
+      `<h1>Latest reporting</h1><p>No reports published in the past 30 days. <a href="/archive/">Browse the archive</a>.</p>`,
     `<nav class="coverage-nav" aria-label="Explore news desks">${(property.sections ?? []).map(section => `<a href="/sections/${esc(section.slug)}/">${esc(section.title)} <span>${(bySection.get(section.slug) ?? []).length} reports</span></a>`).join("")}</nav>`,
     x402Product(property),
     sectionBlocks,

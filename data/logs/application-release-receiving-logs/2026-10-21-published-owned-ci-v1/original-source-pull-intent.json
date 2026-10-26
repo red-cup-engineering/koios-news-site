@@ -1,0 +1,16 @@
+{
+  "request": {
+    "requestId": "koios-website-0-1-10-source-pull-20261021",
+    "workRef": "https://github.com/causeway-services/koios.news/issues/40",
+    "repositoryId": 1408904976,
+    "effect": {
+      "kind": "pull.draft",
+      "head": "codex/receive-koios-website-0-1-10-20261021",
+      "base": "main",
+      "headSha": "1662c600e528e1722bbe239aa8aa2ce712114248",
+      "title": "Receive the published Koios website 0.1.10 in the application",
+      "body": "The website pin had advanced while the application still selected 0.1.9. Select canonical 0.1.10 and its verified integrity, bind the existing parent source revision, and advance the occupied application version through the original Code release planner.\n\nThe exact website source passed 173 public checks. Its original publisher delivered the exact canonical artifact; independent receiving verified these two JSON changes. Live deployment, owned storage and public article receiving remain separate obligations on issue40."
+    }
+  },
+  "reviewSHA256": "c91deca9e911041bb964abb27297e0a22ac64f85aa954af656da886757586419"
+}

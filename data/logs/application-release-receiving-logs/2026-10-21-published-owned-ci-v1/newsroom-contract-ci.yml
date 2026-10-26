@@ -1,0 +1,19 @@
+name: Koios newsroom source contract CI
+# Run source-only contract tests on explicit demand, not on every newsroom edit.
+# Publication and operating timers have their own owners.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+jobs:
+  newsroom-contract:
+    # A privileged self-hosted runner must never execute an outside fork's PR.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    uses: red-cup-engineering/continuous-delivery-services-section/.github/workflows/node-package.yml@69c34e262f30cb258e5f673c7286a60d800d9b32
+    with:
+      runs-on: '["self-hosted","Linux","X64","guix","cold-red-gate","koios-news"]'
+      paths: '["."]'
+      install: false
+      check: false
+      test-script: test:newsroom-contract

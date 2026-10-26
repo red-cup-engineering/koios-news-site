@@ -1,0 +1,310 @@
+{
+  "blob": {
+    "sha": "fa54c2fa3b7b569352c5bad993960d0ed4d53e2b",
+    "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/fa54c2fa3b7b569352c5bad993960d0ed4d53e2b"
+  },
+  "tree": {
+    "sha": "4872a3ef1322cb8d26bc62821199fe9fc566b297",
+    "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/4872a3ef1322cb8d26bc62821199fe9fc566b297",
+    "tree": [
+      {
+        "path": ".github",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "3bdbc7147f568a80b3859910b5cc876313b35ed2",
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/3bdbc7147f568a80b3859910b5cc876313b35ed2"
+      },
+      {
+        "path": ".gitignore",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "ab65f8f4ef645fbfd3e0140cd98ed2214e100513",
+        "size": 125,
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/ab65f8f4ef645fbfd3e0140cd98ed2214e100513"
+      },
+      {
+        "path": ".npmrc",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "0a1f8151935f5a483c368cd930c26519cb3663cf",
+        "size": 37,
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/0a1f8151935f5a483c368cd930c26519cb3663cf"
+      },
+      {
+        "path": "PUBLICATION-BUILD.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d1a7133bd70240117f7d6a90da53e09cad809292",
+        "size": 2240,
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/d1a7133bd70240117f7d6a90da53e09cad809292"
+      },
+      {
+        "path": "README.md",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "5ee32b1a4a0861923749ec54cc721dbd2373e71c",
+        "size": 24103,
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/5ee32b1a4a0861923749ec54cc721dbd2373e71c"
+      },
+      {
+        "path": "data",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "6759a4e1fa65b3cc5ed06a39d4ed0044a41644b2",
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/6759a4e1fa65b3cc5ed06a39d4ed0044a41644b2"
+      },
+      {
+        "path": "package.json",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "d5698c2cf80c4f1f612c1da57e66083b0973902d",
+        "size": 2385,
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/d5698c2cf80c4f1f612c1da57e66083b0973902d"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "2bd1650a4633efa694cee6949f059ba079a9f433",
+        "size": 72153,
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/2bd1650a4633efa694cee6949f059ba079a9f433"
+      },
+      {
+        "path": "pnpm-workspace.yaml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "58719dd91a2f38be6df58f5c005c0baa54e9fd8a",
+        "size": 589,
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/58719dd91a2f38be6df58f5c005c0baa54e9fd8a"
+      },
+      {
+        "path": "release",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "08397c67f4be4e5b6fbd29918829f9a63a7d295b",
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/08397c67f4be4e5b6fbd29918829f9a63a7d295b"
+      },
+      {
+        "path": "scripts",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "3579a11beb39a32ddf9bd3f9915c4b1908dddf3e",
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/3579a11beb39a32ddf9bd3f9915c4b1908dddf3e"
+      },
+      {
+        "path": "src",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "3295e564e1d29f1404318488203206e0d573ef96",
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/3295e564e1d29f1404318488203206e0d573ef96"
+      },
+      {
+        "path": "test",
+        "mode": "040000",
+        "type": "tree",
+        "sha": "e0f01546f6cac315c691d694bd21a83ca1eec51d",
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/e0f01546f6cac315c691d694bd21a83ca1eec51d"
+      }
+    ],
+    "truncated": false
+  },
+  "commit": {
+    "sha": "68630f0e624206ddbe2a1e01c521716787bb5764",
+    "node_id": "C_kwDOVPvXwtoAKDY4NjMwZjBlNjI0MjA2ZGRiZTJhMWUwMWM1MjE3MTY3ODdiYjU3NjQ",
+    "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/commits/68630f0e624206ddbe2a1e01c521716787bb5764",
+    "html_url": "https://github.com/causeway-services/koios-news-site/commit/68630f0e624206ddbe2a1e01c521716787bb5764",
+    "author": {
+      "name": "emsenn",
+      "email": "emsenn@emsenn.net",
+      "date": "2026-10-21T21:23:43Z"
+    },
+    "committer": {
+      "name": "emsenn",
+      "email": "emsenn@emsenn.net",
+      "date": "2026-10-21T21:23:43Z"
+    },
+    "tree": {
+      "sha": "4872a3ef1322cb8d26bc62821199fe9fc566b297",
+      "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/4872a3ef1322cb8d26bc62821199fe9fc566b297"
+    },
+    "message": "Keep publisher CI stores, caches and temporary files in section data",
+    "parents": [
+      {
+        "sha": "e1bc7fb958df6d3e0a57c584a58d5a95dd8a4631",
+        "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/commits/e1bc7fb958df6d3e0a57c584a58d5a95dd8a4631",
+        "html_url": "https://github.com/causeway-services/koios-news-site/commit/e1bc7fb958df6d3e0a57c584a58d5a95dd8a4631"
+      }
+    ],
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "proof": {
+    "kind": "git.source-tree-patch-proof",
+    "sourceTree": "6cf27eecfbdb9f74bcbe82462b8fb90fc90a22c9",
+    "targetTree": "4872a3ef1322cb8d26bc62821199fe9fc566b297",
+    "declaredLeaves": 1,
+    "changedLeaves": 1,
+    "immediateTrees": 3,
+    "unchangedSubtrees": 5,
+    "completeTransformation": true,
+    "contentAssessed": false,
+    "capabilitiesReceived": false
+  },
+  "frames": [
+    {
+      "sha": "6cf27eecfbdb9f74bcbe82462b8fb90fc90a22c9",
+      "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/6cf27eecfbdb9f74bcbe82462b8fb90fc90a22c9",
+      "tree": [
+        {
+          "path": ".github",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "c86fc32d4d2ef5860947d135810dc16d96efaf48",
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/c86fc32d4d2ef5860947d135810dc16d96efaf48"
+        },
+        {
+          "path": ".gitignore",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "ab65f8f4ef645fbfd3e0140cd98ed2214e100513",
+          "size": 125,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/ab65f8f4ef645fbfd3e0140cd98ed2214e100513"
+        },
+        {
+          "path": ".npmrc",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "0a1f8151935f5a483c368cd930c26519cb3663cf",
+          "size": 37,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/0a1f8151935f5a483c368cd930c26519cb3663cf"
+        },
+        {
+          "path": "PUBLICATION-BUILD.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "d1a7133bd70240117f7d6a90da53e09cad809292",
+          "size": 2240,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/d1a7133bd70240117f7d6a90da53e09cad809292"
+        },
+        {
+          "path": "README.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "5ee32b1a4a0861923749ec54cc721dbd2373e71c",
+          "size": 24103,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/5ee32b1a4a0861923749ec54cc721dbd2373e71c"
+        },
+        {
+          "path": "data",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "6759a4e1fa65b3cc5ed06a39d4ed0044a41644b2",
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/6759a4e1fa65b3cc5ed06a39d4ed0044a41644b2"
+        },
+        {
+          "path": "package.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "d5698c2cf80c4f1f612c1da57e66083b0973902d",
+          "size": 2385,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/d5698c2cf80c4f1f612c1da57e66083b0973902d"
+        },
+        {
+          "path": "pnpm-lock.yaml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "2bd1650a4633efa694cee6949f059ba079a9f433",
+          "size": 72153,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/2bd1650a4633efa694cee6949f059ba079a9f433"
+        },
+        {
+          "path": "pnpm-workspace.yaml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "58719dd91a2f38be6df58f5c005c0baa54e9fd8a",
+          "size": 589,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/58719dd91a2f38be6df58f5c005c0baa54e9fd8a"
+        },
+        {
+          "path": "release",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "08397c67f4be4e5b6fbd29918829f9a63a7d295b",
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/08397c67f4be4e5b6fbd29918829f9a63a7d295b"
+        },
+        {
+          "path": "scripts",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "3579a11beb39a32ddf9bd3f9915c4b1908dddf3e",
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/3579a11beb39a32ddf9bd3f9915c4b1908dddf3e"
+        },
+        {
+          "path": "src",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "3295e564e1d29f1404318488203206e0d573ef96",
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/3295e564e1d29f1404318488203206e0d573ef96"
+        },
+        {
+          "path": "test",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "e0f01546f6cac315c691d694bd21a83ca1eec51d",
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/e0f01546f6cac315c691d694bd21a83ca1eec51d"
+        }
+      ],
+      "truncated": false
+    },
+    {
+      "sha": "c86fc32d4d2ef5860947d135810dc16d96efaf48",
+      "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/c86fc32d4d2ef5860947d135810dc16d96efaf48",
+      "tree": [
+        {
+          "path": "workflows",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "6e77a1eb2586cfca990af694241eba188b6baf8a",
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/6e77a1eb2586cfca990af694241eba188b6baf8a"
+        }
+      ],
+      "truncated": false
+    },
+    {
+      "sha": "6e77a1eb2586cfca990af694241eba188b6baf8a",
+      "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/trees/6e77a1eb2586cfca990af694241eba188b6baf8a",
+      "tree": [
+        {
+          "path": "discovery-readiness.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "b8125173979e7be9a25027c632e7c9975e5013f4",
+          "size": 3888,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/b8125173979e7be9a25027c632e7c9975e5013f4"
+        },
+        {
+          "path": "house-ad-rendering.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6fe22aafb3e8b5e674a6012df3ddcb13b61bfd21",
+          "size": 974,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/6fe22aafb3e8b5e674a6012df3ddcb13b61bfd21"
+        },
+        {
+          "path": "publisher-entity.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "c713f5546b7eb6839d464b9347e5d75b01481834",
+          "size": 1577,
+          "url": "https://api.github.com/repos/causeway-services/koios-news-site/git/blobs/c713f5546b7eb6839d464b9347e5d75b01481834"
+        }
+      ],
+      "truncated": false
+    }
+  ]
+}

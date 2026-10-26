@@ -1,0 +1,9 @@
+{
+  "path": "/repos/causeway-services/koios.news/hooks/699605650/deliveries?per_page=10",
+  "status": 200,
+  "resource": "webhook_deliveries",
+  "remaining": "499",
+  "reset": "1792625674",
+  "rawCapture": true,
+  "readOnly": true
+}

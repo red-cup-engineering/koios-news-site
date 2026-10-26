@@ -1,0 +1,52 @@
+{
+  "type": "ActualOriginalPublicCiOwnedStorageAndSourceIntegrationReceiving",
+  "observedAt": "2026-10-21T21:42:14.308889+00:00",
+  "repository": "causeway-services/koios-news-site",
+  "repositoryId": 1425790914,
+  "pull": 4,
+  "head": "68630f0e624206ddbe2a1e01c521716787bb5764",
+  "actualExpectedDefault": "30857a9597b061b1ccdc7058ef80a2b5c6043a9e",
+  "merge": "e09d7b40e64e099ef388a84465994e407d4b3b14",
+  "workflowRun": 39678446509,
+  "runAttempt": 2,
+  "job": 119500042817,
+  "sourceReceiving": "data/records/newswire-receiving-records/2026-10-21-owned-ci-successor-source-review.json",
+  "actualTests": {
+    "structuredData": 5,
+    "fullCurrentApplication": 168,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "actualPnpmStore": "/home/runner/work/koios-news-site/koios-news-site/data/logs/publisher-entity-ci-logs/pnpm-store/v11",
+  "originalFailure": "Attempt1 received registry.561.group HTTP502; no tests ran. One original publicfailedjob rerun after independently observed registry recovery. No source/test bypass.",
+  "concurrentSource": "OriginalPR5 documentation-only changed actualdefault; received exact2pathdelta before ordinary original GHS source/integration under currentdefault.",
+  "evidence": [
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/actual-successor-recovered-full-public-ci-job.log",
+      "sha256": "9ad43c809e9405170169f513db07cd7f9ac7b7ebdc22ce39768c2e477e3fc756",
+      "bytes": 56028
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/actual-successor-recovered-ci-jobs.json",
+      "sha256": "852de87fbf8f41deaab0eff16e9e6375d6a160d86897148959103f2dfd6fa196",
+      "bytes": 3138
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/actual-successor-original-integration-result-v2.json",
+      "sha256": "d06d79592a9dde3554a7ad6518273fa1d260c53eab58cfb014554f48c2d3aabe",
+      "bytes": 1254
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/actual-successor-concurrent-documentation-receiving.json",
+      "sha256": "7fe7a0ec0c6b44e479bd59280bb7a0f2ad9cbc394500f95814f5834d19f41377",
+      "bytes": 716
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/actual-restored-registry-known-version.json",
+      "sha256": "459d34148437961eb5d6515e4dfda74d14976be4acbb19304f2e815e70c6de42",
+      "bytes": 1064
+    }
+  ],
+  "limits": "ActualCIstorage/sourceintegration received. Canonical immutable artifact, currentKoiosapplicationselection, Guix/Cloudflaredeployment and served publisher IDs remain separate owedoperations; originalcontent/editorialhistory untouched."
+}

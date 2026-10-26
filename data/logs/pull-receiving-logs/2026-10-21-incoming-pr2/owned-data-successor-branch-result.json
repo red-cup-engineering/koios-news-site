@@ -1,0 +1,30 @@
+{
+  "state": "PROVIDER_RECEIVED",
+  "receipt": {
+    "schema": "github.review-call.receipt.v1",
+    "state": "PROVIDER_RECEIVED",
+    "plan": {
+      "schema": "github.review-call.plan.v1",
+      "requestId": "koios-owned-ci-source-branch-20261021",
+      "workRef": "https://github.com/causeway-services/koios-news-site/pull/2",
+      "repositoryId": 1425790914,
+      "effect": {
+        "kind": "branch.create",
+        "branch": "codex/keep-koios-ci-state-in-section-data-20261021",
+        "baseSha": "68630f0e624206ddbe2a1e01c521716787bb5764"
+      }
+    },
+    "principal": "emsenn",
+    "repositoryId": 1425790914,
+    "canonicalName": "causeway-services/koios-news-site",
+    "preparedAt": "2026-10-21T21:23:41.817Z",
+    "admissionEvidence": "human:burn-github-debt-and-no-local;independent:e6603aa485b991e887eebc4622a161fa27f07d8b5e57be52179a21fc3bee8f68",
+    "attemptedAt": "2026-10-21T21:23:42.240Z",
+    "observedAt": "2026-10-21T21:23:42.950Z",
+    "readback": {
+      "kind": "BRANCH_READBACK",
+      "branch": "codex/keep-koios-ci-state-in-section-data-20261021",
+      "headSha": "68630f0e624206ddbe2a1e01c521716787bb5764"
+    }
+  }
+}

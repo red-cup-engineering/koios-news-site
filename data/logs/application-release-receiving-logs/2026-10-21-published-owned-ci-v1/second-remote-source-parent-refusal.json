@@ -1,0 +1,6 @@
+{
+  "kind": "ReceiverSingleCommitAssumptionRefusal",
+  "sourceEffects": false,
+  "finding": "Original four bounded operations are branch.create, two file.put and pull.draft; the two puts create two commits. Requiring head immediate parent to equal original base was an incorrect receiver assumption. Actual two-link ancestry and exact full leaf union are received below.",
+  "retainedFailure": "source parent"
+}

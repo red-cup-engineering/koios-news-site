@@ -1,0 +1,8 @@
+{
+  "id": 6329031281,
+  "url": "https://github.com/causeway-services/koios.news/pull/57#issuecomment-6329031281",
+  "body": "Actual source and canonical publication received.\n\nPR57 merged normally at `76e35404167f4d9995337f48aed6e1878efbe99e`, with parents `d0859ddd3d6cdfea593800570d6c6050d87c4bef` and `1662c600e528e1722bbe239aa8aa2ce712114248`. Both reviewed JSON blobs match; all 336 unrelated leaves/gitlinks remain unchanged. The native provider's REST-floor refusal was retained before any merge attempt; the existing GitHub connector performed the one expected-head merge with original source receiving and canonical journal/CAS retained.\n\nThe original publisher received the real default-branch push (delivery `3849628833258930176`, HTTP202). Canonical `@causeway-services/koios-news@0.0.43` now has that exact merge as gitHead, with `@causeway-services/koios-news-site@0.1.10` and the accepted release configuration. Its 323,953-byte archive has 284 unique regular members: all 283 nonmanifest members match actual merged Git blobs and executable intent; package.json differs solely by the publisher gitHead stamp. No missing or extra declared files.\n\nIntegrity: `sha512-7C1b2wZ++61GM8sdDVFY1Ll+hV/84UuGHtTWO7XEUlYPlyyMOSNtStce9hFYIN84cPkfixYkfost9CoYkpS7Hg==`.\nReceiving index SHA256: `ac0db9ef8edfe36f41abfc9c914ac3fe2b50f1929d522454ba8e5a46fa48dd6f`.\n\nThis closes the selected source/publication edge. Native application deployment, live connected-actor use and the existing operating-storage obligation remain unreceived on their original carriers. No manual publisher event, registry PUT, application restart or test replay was used.",
+  "author": "emsenn",
+  "createdAt": "2026-10-21T23:41:08Z",
+  "updatedAt": "2026-10-21T23:41:08Z"
+}

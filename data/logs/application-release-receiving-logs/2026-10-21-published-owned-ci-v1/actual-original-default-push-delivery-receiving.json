@@ -1,0 +1,35 @@
+{
+  "kind": "ActualOriginalKoiosDefaultPushDeliveryReceiving",
+  "at": "2026-10-21T23:35:30.664Z",
+  "requests": 2,
+  "selected": [
+    {
+      "idExact": "3849628835964256256",
+      "deliveredAt": "2026-10-21T22:51:59.44Z",
+      "status": "OK",
+      "statusCode": 202,
+      "event": "push",
+      "repositoryId": 1408904976,
+      "ref": "refs/heads/codex/receive-koios-website-0-1-10-20261021",
+      "before": "1662c600e528e1722bbe239aa8aa2ce712114248",
+      "after": "0000000000000000000000000000000000000000",
+      "deleted": true
+    },
+    {
+      "idExact": "3849628833258930176",
+      "deliveredAt": "2026-10-21T22:51:58.159Z",
+      "status": "OK",
+      "statusCode": 202,
+      "event": "push",
+      "repositoryId": 1408904976,
+      "ref": "refs/heads/main",
+      "before": "d0859ddd3d6cdfea593800570d6c6050d87c4bef",
+      "after": "76e35404167f4d9995337f48aed6e1878efbe99e",
+      "deleted": false
+    }
+  ],
+  "exactOriginalMergeDelivered": true,
+  "opaqueIdSource": "Original createClient fetch response raw capture, Python exact integer decoding, decimal path preserved; prior rounded404 remains antecedent",
+  "redeliveryRequested": false,
+  "manualEvent": false
+}

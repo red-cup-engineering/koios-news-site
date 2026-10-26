@@ -1,0 +1,53 @@
+{
+  "schema": "site.owned-ci-successor-source-independent-receiving.v1",
+  "at": "2026-10-21T21:31:29.037Z",
+  "verdict": "MET_EXACT_SOURCE_EFFECTS_SUCCESSOR",
+  "repository": "causeway-services/koios-news-site",
+  "repositoryId": 1425790914,
+  "source": {
+    "default": "e1bc7fb958df6d3e0a57c584a58d5a95dd8a4631",
+    "head": "68630f0e624206ddbe2a1e01c521716787bb5764",
+    "tree": "4872a3ef1322cb8d26bc62821199fe9fc566b297",
+    "branch": "codex/keep-koios-ci-state-in-section-data-20261021",
+    "workflowGitBlob": "fa54c2fa3b7b569352c5bad993960d0ed4d53e2b",
+    "workflowSha256": "ff19177a43b40ff5414e98ec5162563a197f137ab60140b0e8e3e5a997093712"
+  },
+  "proof": {
+    "kind": "git.source-tree-patch-proof",
+    "sourceTree": "6cf27eecfbdb9f74bcbe82462b8fb90fc90a22c9",
+    "targetTree": "4872a3ef1322cb8d26bc62821199fe9fc566b297",
+    "declaredLeaves": 1,
+    "changedLeaves": 1,
+    "immediateTrees": 3,
+    "unchangedSubtrees": 5,
+    "completeTransformation": true,
+    "contentAssessed": false,
+    "capabilitiesReceived": false
+  },
+  "antecedent": {
+    "sourceProposal": "415d46df124b58aab74dad70b68c8cbd059f292eb9415519bcd8a7fecd5fe72d",
+    "independentSourceReceiving": "e6603aa485b991e887eebc4622a161fa27f07d8b5e57be52179a21fc3bee8f68",
+    "originalPull": 2,
+    "disposition": "OriginalPR2 alreadymerged; original guarded same-PR forward had no source effect. New normal successor from actual freshmain preserves unrelated source; closedPR2 is not reopened or pushed."
+  },
+  "judgment": "Identical ff191 code/privacy/public-standard-compute review holds. Exactly one original workflow leaf changes; all unselected subtrees remain exact. Public standard CI is the intended follow-through, not already received owned-storage execution. Original171 prior passes remain historical observations with old.local store; no rerun or broader authority claimed.",
+  "evidence": [
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/owned-data-successor-source-proposal-v4.json",
+      "sha256": "b18e29fc3452ddf6228e2a9a3aef29c01bfc10ab5c293bd6ea2ee56e1957b0d5"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/owned-data-successor-immutable-source-result.json",
+      "sha256": "58ef157e73dea2339a1a691154779dbc4e05718b0e05dac74402a8e3973dcd04"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/actual-successor-current-main-guards.json",
+      "sha256": "acab53636e54b45ed40bc228f7a8e591f26e1227a79e4214b7f9a790fec4e850"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/owned-data-successor-pr-result.json",
+      "sha256": "ddeefb4214b1137d9463007245e20a2dd55592c00439024aec27b433972b3856"
+    }
+  ],
+  "effectsByReceiver": "File reads/cryptographic sharedGit proof and this curated record only. No API/tests/parser/CI dispatch or source modification."
+}

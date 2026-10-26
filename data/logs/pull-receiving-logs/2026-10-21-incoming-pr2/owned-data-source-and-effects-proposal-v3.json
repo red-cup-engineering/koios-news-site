@@ -1,0 +1,37 @@
+{
+  "type": "OriginalKoiosPublisherCISectionDataCorrectionProposal",
+  "at": "2026-10-21T21:14:51.666458+00:00",
+  "originalWork": "https://github.com/causeway-services/koios-news-site/pull/2",
+  "expectedHead": "5f8bfe2f37516922bce24e927d8d7c53f13f8ebb",
+  "source": {
+    "path": ".github/workflows/publisher-entity.yml",
+    "file": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/owned-data-source-v2/.github/workflows/publisher-entity.yml",
+    "beforeSHA256": "719564de64ba87077be5cd8c86ac36c07bd69c097e97de935bd1d0dd337bbcfe",
+    "sha256": "ff19177a43b40ff5414e98ec5162563a197f137ab60140b0e8e3e5a997093712",
+    "bytes": 3742,
+    "canonicalAdmission": "Reject existing symlink/wrong-kind/foreign-owned selected data/logs/component/9child chain before mkdir. Receive canonical workspace and every created selected path; receive canonical actual native PNPM store against exact canonical selected directory.",
+    "supplierContextLimit": "Authored state binding preserves actual HOME; original checkout action has its own documented temporary internalHOME. No whole-supplier HOME-internals claim."
+  },
+  "observedViolation": [
+    "structured-data\tInstall original declared dependencies without substituting fixtures\t2026-10-21T20:59:33.0422590Z   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11"
+  ],
+  "priorCI": {
+    "run": 39675017845,
+    "job": 119482489628,
+    "sourceMerge": "14d3536 of5f8bfe into0a4e",
+    "structured": {
+      "pass": 5,
+      "fail": 0
+    },
+    "fullOriginalSuite": {
+      "pass": 166,
+      "fail": 0
+    },
+    "logSHA256": "46b875adc681bd749071dcb97a434a1748811ed6f1c334a8e92b659545e98567"
+  },
+  "correction": "Original same workflow initializes original GitHub GITHUB_ENV after checkout before setup/install/tests. Corepack/PNPM/npm/all4XDG/TMP paths under this section data/logs; explicit PNPM --store-dir and actual native store-path receiving. Actual HOME remains inherited. Existing source, permissions, immutable action pins, test commands, private-source membrane and12minute bound unchanged.",
+  "effects": "One ordinary expected-head fast-forward of same original source PR branch; existing PUBLIC standard-runner CI is the original receiver after changed execution context. No re-run command, paid/private Actions, workflow disable, grant/visibility change or native deployment.",
+  "remaining": "Independent source review and actual renewed same-workflow installation/store path/full original tests before source integration; exact release/public consumer receiving remains separate.",
+  "supersedes": "2a2862b28f4d1e24ec1b4d2a853611fec9029397025d58e9045eac66fbdb0a52",
+  "filingCorrection": "Original v1 candidate bytes restored from original source+native patch; unchanged v2 source copied to a separate immutable candidate. Prior v2 proposal reused v1 filename and is superseded only in that source path. No source-code/test replay."
+}

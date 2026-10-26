@@ -1,0 +1,14 @@
+{
+  "kind": "koios.website-release/v1",
+  "source": {
+    "repository": "causeway-services/koios.news",
+    "revision": "b6000e93f73310c2449543179134947f68446e80",
+    "directory": "services/website"
+  },
+  "package": {
+    "registry": "https://registry.561.group/",
+    "name": "@causeway-services/koios-news-site",
+    "version": "0.1.9",
+    "integrity": "sha512-3kyesUBcizL+e56o4AFZ7yzp7uc9XcOmn59J/WssJ1Vt06VrAdk/8WVj0qrAsAbDLhy83alDsg4PJdqO8VAu5Q=="
+  }
+}

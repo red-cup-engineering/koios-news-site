@@ -1,0 +1,108 @@
+{
+  "kind": "KoiosApplication043ActualSourcePublicationReceivingIndex",
+  "at": "2026-10-21T23:40:52.346731+00:00",
+  "verdict": "MET_EXACT_SOURCE_AND_CANONICAL_PUBLICATION",
+  "repository": "causeway-services/koios.news",
+  "pull": 57,
+  "merge": "76e35404167f4d9995337f48aed6e1878efbe99e",
+  "version": "0.0.43",
+  "siteVersion": "0.1.10",
+  "archiveMembers": 284,
+  "nonManifestSourceEqual": 283,
+  "integrity": "sha512-7C1b2wZ++61GM8sdDVFY1Ll+hV/84UuGHtTWO7XEUlYPlyyMOSNtStce9hFYIN84cPkfixYkfost9CoYkpS7Hg==",
+  "actualPublisherDelivery": "3849628833258930176",
+  "externalEffectsPreserved": true,
+  "nativeAppDeploymentReceived": false,
+  "connectedActorUseReceived": false,
+  "nativeProviderFloorRefusalRetained": true,
+  "mergeTransport": "Existing GitHub connector, original plan and JsonReceiptStore CAS retained",
+  "manualPublisherEvent": false,
+  "manualRegistryPut": false,
+  "carriers": [
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/source-selection-proposal-v1.json",
+      "bytes": 6362,
+      "sha256": "f6948da3350d0c6b85dde396e01583b77939e439f15952745c13066796b3f6c3"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/independent-two-json-source-selection-receiving.json",
+      "bytes": 5453,
+      "sha256": "c91deca9e911041bb964abb27297e0a22ac64f85aa954af656da886757586419"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/independent-actual-remote-two-json-source-receiving.json",
+      "bytes": 1364,
+      "sha256": "e12828862f3cd084d34b3ee661a88702342b5422e9453e99640b16307f9e814e"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/independent-actual-before-after-leaves.json",
+      "bytes": 129852,
+      "sha256": "fb7c7f885f8749efac04e2e089e3b043c89e5d7e800cecf044f4f4ad3320aa32"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-normal-main-two-json-source-receiving.json",
+      "bytes": 992,
+      "sha256": "43d2a833f36cb54eb26a17b51387e5dbf587964c1bd30d47a8118640a0342156"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-original-source-receiving.json",
+      "bytes": 1780,
+      "sha256": "d1d6ac18fd875373c0d698923b0850a3d3a07b990c6f670c1cc8b2f74db247e7"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-original-source-integration.json",
+      "bytes": 2714,
+      "sha256": "d18485aec15d7eae34b0c20e038bd5eb3cfb48c8810bef80e0e04635b33eac82"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/original-native-provider-budget-refusal.json",
+      "bytes": 341,
+      "sha256": "b719485ac7b4fbe417b12a168a01bee27c620f12d8685d36ac4ca394b5929144"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-existing-connector-integration-attempt.json",
+      "bytes": 1900,
+      "sha256": "90da168e969a5b34a93d152bcbc4eea557eddd5aab93dd56961a59bcb974fef9"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-existing-connector-merge-result.json",
+      "bytes": 203,
+      "sha256": "729e8043c9b581920f0ad343d747aae93090a351051b5335a986f0d2743c0757"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/connector-merge-commit-receiving.json",
+      "bytes": 6532,
+      "sha256": "3bd20eb4c2d9617813e98d981a41d39196c2ead1ec0e9a8ac5e784ecbb2f1b04"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/connector-actual-main-receiving.json",
+      "bytes": 11787,
+      "sha256": "9b6649df623b7affaa45c0d9984aeb9d9ed17031b5bed0ce8e437dc095804ef7"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-original-default-push-delivery-receiving.json",
+      "bytes": 1193,
+      "sha256": "e1c1eb0cd50c6cf0b49af5e7ae183ac64c9703caac1c768788729036504764a8"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-post-merge-canonical-application-0.0.43-v3.json",
+      "bytes": 7708,
+      "sha256": "bcee38a7dacd7e9d15b800c1e7b2dc048b1130a9c9f0a00f7f14c79d9ab54f6c"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-canonical-application-tarball-receiving.json",
+      "bytes": 202,
+      "sha256": "770a28836779f2506c7782a342819e5ca471687bd6c8c6aa6aaaf711a29c6914"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-canonical-application-0.0.43.tgz",
+      "bytes": 323953,
+      "sha256": "4c9f9bf74bd6d70aa4665f3a7a49120608350b8b250acc07a5035fbcbf65b728"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-canonical-application-archive-source-receiving.json",
+      "bytes": 95053,
+      "sha256": "2d14e2f981043d0954b23657028b52a161abfb6d37e9d61fd7401998aaefc3d2"
+    }
+  ]
+}

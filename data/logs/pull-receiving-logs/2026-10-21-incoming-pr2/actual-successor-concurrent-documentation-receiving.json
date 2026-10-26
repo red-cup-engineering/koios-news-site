@@ -1,0 +1,13 @@
+{
+  "type": "SameQualifiedSourceConcurrentDocumentationReceiving",
+  "verdict": "MET",
+  "actualOldDefault": "e1bc7fb958df6d3e0a57c584a58d5a95dd8a4631",
+  "actualCurrentDefault": "30857a9597b061b1ccdc7058ef80a2b5c6043a9e",
+  "qualifiedHead": "68630f0e624206ddbe2a1e01c521716787bb5764",
+  "changedPaths": [
+    "README.md",
+    "PUBLICATION-BUILD.md"
+  ],
+  "sourceEffect": "Concurrent originalPR5 corrects currentapplication/release instructions only. Exactff191workflow and package/runtime/tests unchanged. Original8b054 independent source receiving and actual173passed current tests remain applicable; no unchanged replay.",
+  "evidenceSHA256": "916d2eb2b78af9759d56b76883bb901e86d9f583c08328074125954fedf42ac6"
+}

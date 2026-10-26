@@ -1,0 +1,43 @@
+{
+  "schema": "publisher.workflow-owned-data-independent-receiving.v3",
+  "verdict": "met",
+  "scope": "EXACT_WORKFLOW_SOURCE_AND_BOUNDED_PUBLIC_SAME_PR_EFFECTS",
+  "repository": "causeway-services/koios-news-site",
+  "pull": 2,
+  "expectedHead": "5f8bfe2f37516922bce24e927d8d7c53f13f8ebb",
+  "proposalSHA256": "415d46df124b58aab74dad70b68c8cbd059f292eb9415519bcd8a7fecd5fe72d",
+  "source": {
+    "path": ".github/workflows/publisher-entity.yml",
+    "sha256": "ff19177a43b40ff5414e98ec5162563a197f137ab60140b0e8e3e5a997093712",
+    "bytes": 3742,
+    "file": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/owned-data-source-v2/.github/workflows/publisher-entity.yml"
+  },
+  "priorUnmetReceiptSHA256": "8f45b6317a74c0dd9b995f2c8c88b05bf7eec49a7ad72afe87e5b086469e07e4",
+  "findings": [
+    "Before mkdir, all12 explicit selected paths are checked for existing symlinks, wrong kind and foreign UID. Canonical workspace is the provider-selected original checkout, and all created selected paths must equal their canonical paths. This closes the stable-redirection gap in the v1 receiver.",
+    "After original install, both selected store and actual pnpm store path are received through realpath-e; only exact canonical selected store or descendants pass. No lexical-only store receiving claim remains.",
+    "The original post-checkout GITHUB_ENV mechanism directs Corepack/npm/PNPM/fourXDG/TMP to section typed logs before setup/install/tests. Authored HOME/CODEX remain inherited; pinned checkout temporary internalHOME behavior remains an explicit supplier limit.",
+    "The complete diff retains original action pins, contents:read, Node24, frozen lock, original5 and complete-suite commands, publicUbuntu and12minute bound. No workflow disable, new credentials, visibility or paid/private runner."
+  ],
+  "effectsReceived": "Original samePR expected-head fast-forward only after fresh source/rule guards, followed by its ordinary PUBLIC standard-runner workflow. This receiver performed no tests, parser execution, source/API or compute effects. Final operative source path is the separate frozen owned-data-source-v2, preserving originalv1 and v2metadata as antecedents.",
+  "priorEvidence": {
+    "run": 39675017845,
+    "structured": 5,
+    "fullOriginal": 166,
+    "fail": 0,
+    "logSHA256": "46b875adc681bd749071dcb97a434a1748811ed6f1c334a8e92b659545e98567",
+    "originalHomeStoreViolationRetained": true
+  },
+  "remaining": [
+    "Fresh samePR exact source readback and actual renewed install/store canonical path/full native publicCI receiving are owed.",
+    "No corrected-context native pass, registry/package publication, parent adoption or deployed site is claimed by this source review."
+  ],
+  "sourceCustody": {
+    "v1SourceRestored": true,
+    "v1SHA256": "f8801c0cc22d5bcb40113ea7efb85aa5be9f3d2f77d1b58c3a5844a9218ec80f",
+    "sameReviewedV2Bytes": true,
+    "priorV2MetadataSupersededByPathOnly": true,
+    "priorV2ByteReviewSHA256": "7f768819aee3bf334d2547c54c19424a2afcb7daf9bd207dd90c1cc8aea6e5e3",
+    "commandsOrTestsRerun": false
+  }
+}

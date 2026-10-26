@@ -1,0 +1,38 @@
+{
+  "receiveRequest": {
+    "repository": "causeway-services/koios.news",
+    "repositoryId": 1408904976,
+    "requestId": "koios-canonical-website-selection-20261021-pr57-receiving",
+    "workRef": "https://github.com/causeway-services/koios.news/pull/57",
+    "branch": "codex/receive-koios-website-0-1-10-20261021",
+    "headSha": "1662c600e528e1722bbe239aa8aa2ce712114248",
+    "defaultSha": "d0859ddd3d6cdfea593800570d6c6050d87c4bef",
+    "consumerEvidence": [
+      "sha256:c91deca9e911041bb964abb27297e0a22ac64f85aa954af656da886757586419",
+      "sha256:82abd91cc17b255a3378039ed8c3615700466a09a1aca24529b75164fa6b0b62",
+      "Exact two JSON source selection; installed application/native storage/deployment remain unreceived"
+    ]
+  },
+  "request": {
+    "repository": "causeway-services/koios.news",
+    "repositoryId": 1408904976,
+    "requestId": "koios-canonical-website-selection-20261021-pr57",
+    "workRef": "https://github.com/causeway-services/koios.news/pull/57",
+    "number": 57,
+    "expectedHeadSha": "1662c600e528e1722bbe239aa8aa2ce712114248",
+    "expectedDefaultSha": "d0859ddd3d6cdfea593800570d6c6050d87c4bef",
+    "receivingRef": "https://github.com/causeway-services/koios.news/pull/57"
+  },
+  "admission": {
+    "kind": "IndependentExactTwoJSONSourceOnlyIntegration",
+    "actor": {
+      "id": 111507,
+      "login": "emsenn"
+    },
+    "checks": 0,
+    "statuses": 0,
+    "protected": false,
+    "privateWorkflowPathsExcluded": true,
+    "sourceOnly": true
+  }
+}

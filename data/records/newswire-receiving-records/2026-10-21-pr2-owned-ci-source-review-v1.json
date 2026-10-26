@@ -1,0 +1,74 @@
+{
+  "schema": "publisher.workflow-owned-data-independent-receiving.v1",
+  "verdict": "unmet",
+  "scope": "SOURCE_EFFECTS_REVIEW_ONLY_NO_TEST_OR_PROVIDER_EFFECT",
+  "repository": "causeway-services/koios-news-site",
+  "pull": 2,
+  "expectedHead": "5f8bfe2f37516922bce24e927d8d7c53f13f8ebb",
+  "proposalSHA256": "7aee166dfd03ff9f3595e559ab7510182925754bfb53983ae83568dddc4d2be7",
+  "candidate": {
+    "path": ".github/workflows/publisher-entity.yml",
+    "sha256": "f8801c0cc22d5bcb40113ea7efb85aa5be9f3d2f77d1b58c3a5844a9218ec80f",
+    "gitBlob": "35acb0c9c70767d8834ec6ffd8357e121d3b78ba",
+    "bytes": 2983
+  },
+  "received": {
+    "originalSourceFiles": [
+      {
+        "path": ".github/workflows/publisher-entity.yml",
+        "gitBlob": "c713f5546b7eb6839d464b9347e5d75b01481834",
+        "sha256": "719564de64ba87077be5cd8c86ac36c07bd69c097e97de935bd1d0dd337bbcfe",
+        "bytes": 1577
+      },
+      {
+        "path": "pnpm-workspace.yaml",
+        "gitBlob": "58719dd91a2f38be6df58f5c005c0baa54e9fd8a",
+        "sha256": "66b6daa8c9940eb0217f1b1d5db764d9b561804c0fda48b8b84d961c641065dc",
+        "bytes": 589
+      },
+      {
+        "path": "src/render/templates.mjs",
+        "gitBlob": "9b0d8ac578912b5a091fa75a7642eea3d9c5df8e",
+        "sha256": "3fc27893d24169e0d7dcd655052c9c94bd1310d01c68fd7d9aa30bb19a65b5a1",
+        "bytes": 33233
+      },
+      {
+        "path": "test/structured-data.test.mjs",
+        "gitBlob": "134ac7e56ce6b238d7a1f6f3f6227668336e7929",
+        "sha256": "e2c4487e865f8712f494c2a346457dc73fc7ff30e3a5857c3c26dc8dc3346ab0",
+        "bytes": 8579
+      }
+    ],
+    "priorRun": 39675017845,
+    "priorJob": 119482489628,
+    "fullLogSHA256": "46b875adc681bd749071dcb97a434a1748811ed6f1c334a8e92b659545e98567",
+    "priorNativeCounts": {
+      "structured": 5,
+      "fullOriginal": 166,
+      "fail": 0
+    },
+    "observedStore": "/home/runner/.local/share/pnpm/store/v11"
+  },
+  "findings": [
+    {
+      "condition": "Native mutable destinations must remain canonically inside the owning section data before writes.",
+      "verdict": "unmet",
+      "evidence": "New mkdir -p follows existing data/logs/child symlinks; post-install case only checks the lexical string returned by pnpm store path. It does not inspect canonical backing paths.",
+      "correction": "At the existing Bash step, reject stable existing symlink/wrong-kind on the explicit data/logs/root/selectedchild chain before mkdir, receive the canonical section/log root, and compare real canonical PNPM store destination after install. Preserve the selected envs/pins/test commands and original effect boundary.",
+      "scope": "No actual symlink in this branch is asserted; the proposed receiver itself lacks the required canonical admission."
+    },
+    {
+      "condition": "Direct all package/build selectors into owning typed logs without changing authored HOME/CODEX.",
+      "verdict": "met-source-design",
+      "evidence": "GITHUB_ENV step follows checkout and precedes setup/install; Corepack, npm cache, PNPM home/store, fourXDG and TMPDIR are explicit. Install passes --store-dir. No authored HOME/CODEX assignment."
+    },
+    {
+      "condition": "Preserve original qualification and bounded public compute.",
+      "verdict": "met-source-design",
+      "evidence": "Immutable action pins, contents:read, public standardUbuntu,12minute bound, frozen lock and both original test commands unchanged. The old5/166 success and home-store violation are retained, not relabelled corrected."
+    }
+  ],
+  "supplierObservation": "Original full log lines57/540 show pinned checkout internally overriding HOME temporarily for Git configuration. This antecedent is distinct from the new package/build environment; do not claim every supplier internal preserved HOME.",
+  "next": "Root may seal minimal source correction and proceed same-PR expected-head/public-CI follow-through after source receiving; no broad native suite replay by this receiver.",
+  "effectsByReceiver": "Only exact file reads, hashes and this curated review; no tests, branch/API/workflow/host changes."
+}

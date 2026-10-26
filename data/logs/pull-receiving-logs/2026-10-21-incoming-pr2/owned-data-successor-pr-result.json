@@ -1,0 +1,33 @@
+{
+  "state": "PROVIDER_RECEIVED",
+  "receipt": {
+    "schema": "github.review-call.receipt.v1",
+    "state": "PROVIDER_RECEIVED",
+    "plan": {
+      "schema": "github.review-call.plan.v1",
+      "requestId": "koios-owned-ci-source-pr-20261021",
+      "workRef": "https://github.com/causeway-services/koios-news-site/pull/2",
+      "repositoryId": 1425790914,
+      "effect": {
+        "kind": "pull.draft",
+        "head": "codex/keep-koios-ci-state-in-section-data-20261021",
+        "base": "main",
+        "headSha": "68630f0e624206ddbe2a1e01c521716787bb5764",
+        "title": "Keep publisher CI state in its owning section data directory",
+        "bodyDigest": "0e6ed227c0a42d5cecf96ca34109a0f50bf2f08929fddb449117e36f4f27ce96"
+      }
+    },
+    "principal": "emsenn",
+    "repositoryId": 1425790914,
+    "canonicalName": "causeway-services/koios-news-site",
+    "preparedAt": "2026-10-21T21:23:43.264Z",
+    "admissionEvidence": "human:burn-github-debt-and-no-local;independent:e6603aa485b991e887eebc4622a161fa27f07d8b5e57be52179a21fc3bee8f68",
+    "attemptedAt": "2026-10-21T21:23:43.693Z",
+    "observedAt": "2026-10-21T21:23:45.136Z",
+    "readback": {
+      "kind": "DRAFT_PR_READBACK",
+      "number": 4,
+      "headSha": "68630f0e624206ddbe2a1e01c521716787bb5764"
+    }
+  }
+}

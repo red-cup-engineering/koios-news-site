@@ -1,0 +1,40 @@
+--- original/.github/workflows/publisher-entity.yml
++++ candidate/.github/workflows/publisher-entity.yml
+@@ -29,6 +29,23 @@
+       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+         with:
+           persist-credentials: false
++      - name: Bind package and build state to the site section data
++        shell: bash
++        run: |
++          publisher_ci_data="$GITHUB_WORKSPACE/data/logs/publisher-entity-ci-logs"
++          mkdir -p "$publisher_ci_data"/{corepack,npm-cache,pnpm-home,pnpm-store,cache,state,config,data,temporary}
++          {
++            printf 'COREPACK_HOME=%s\n' "$publisher_ci_data/corepack"
++            printf 'npm_config_cache=%s\n' "$publisher_ci_data/npm-cache"
++            printf 'PNPM_HOME=%s\n' "$publisher_ci_data/pnpm-home"
++            printf 'PNPM_STORE_DIR=%s\n' "$publisher_ci_data/pnpm-store"
++            printf 'npm_config_store_dir=%s\n' "$publisher_ci_data/pnpm-store"
++            printf 'XDG_CACHE_HOME=%s\n' "$publisher_ci_data/cache"
++            printf 'XDG_STATE_HOME=%s\n' "$publisher_ci_data/state"
++            printf 'XDG_CONFIG_HOME=%s\n' "$publisher_ci_data/config"
++            printf 'XDG_DATA_HOME=%s\n' "$publisher_ci_data/data"
++            printf 'TMPDIR=%s\n' "$publisher_ci_data/temporary"
++          } >> "$GITHUB_ENV"
+       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+         with:
+           node-version: '24'
+@@ -41,7 +58,12 @@
+       - name: Install original declared dependencies without substituting fixtures
+         run: |
+           corepack enable
+-          pnpm install --frozen-lockfile
++          pnpm install --frozen-lockfile --store-dir "$PNPM_STORE_DIR"
++          actual_store=$(pnpm store path --store-dir "$PNPM_STORE_DIR")
++          case "$actual_store" in
++            "$PNPM_STORE_DIR"|"$PNPM_STORE_DIR"/*) printf 'Received section-owned PNPM store: %s\n' "$actual_store" ;;
++            *) printf 'PNPM store left its section data: %s\n' "$actual_store" >&2; exit 1 ;;
++          esac
+       - name: Build original publisher fixture and validate identity/metadata
+         run: node --test test/structured-data.test.mjs
+       - name: Verify original publisher test suite

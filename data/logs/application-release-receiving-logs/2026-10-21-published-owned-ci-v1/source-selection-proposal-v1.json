@@ -1,0 +1,77 @@
+{
+  "kind": "KoiosCanonicalWebsiteConsumerSelectionProposal",
+  "sourceRepository": "causeway-services/koios.news",
+  "repositoryId": 1408904976,
+  "expectedDefault": "d0859ddd3d6cdfea593800570d6c6050d87c4bef",
+  "sources": [
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/candidate-v1/package.json",
+      "bytes": 6808,
+      "sha256": "88d82a08881f526963ae9352699df4bc9e29910553d68aeb2638fea75025f082",
+      "gitBlob": "4db4fcb664dc92a09f1dde3c85d1485b0e7e5abd"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/candidate-v1/config/website-release.json",
+      "bytes": 463,
+      "sha256": "efc5387612894e94e158348d7ed57be2f71c3e5d9ba22aaaaa5cac1f39917910",
+      "gitBlob": "5af653b40742ea34ba62f5cd07db1467641fa675"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/app-package.decoded",
+      "bytes": 6807,
+      "sha256": "cdd2d5d6361217e1a2eeb1e7d2c93f8cffeec5ff57620543b8c2418aa7b131d5",
+      "gitBlob": "2816e5680de77511d6f4e448dd65ecfe752cb1df"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/release-config.decoded",
+      "bytes": 462,
+      "sha256": "8c4f56ab8be320fd30c85aced8871b2477cf516ccc687ad2c583e1048c076450",
+      "gitBlob": "eaef2bab623f01023950f71fa35dfe67f2337479"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/application-selection.diff",
+      "bytes": 1539,
+      "sha256": "569ce5cc0a3c3c69a2e5de714d98079bf9e06aaed4f04c0a5067d073e509fd4b",
+      "gitBlob": "f5077b82098e6f6227a14a30b539a7c635e37938"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-selected-services-tree.json",
+      "bytes": 1268,
+      "sha256": "5f0c8808a6127def3758c5213570167adfff475279b41b9e76475f09fdf327e2",
+      "gitBlob": "68fd396e9e5c47cb2dd9092e0b0e3cc9a8df3e5f"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/original-code-selected-application-release-plan-v2.json",
+      "bytes": 529,
+      "sha256": "a6cd78c63fb9fc58e1175055338356bd8b7a24c2c11a3fca6ebae335a8772c27",
+      "gitBlob": "73cbed71b03a6f7a34fcd8dad7e0035919755b06"
+    },
+    {
+      "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/application-release-receiving-logs/2026-10-21-published-owned-ci-v1/actual-original-application-canonical-metadata-v2.json",
+      "bytes": 403113,
+      "sha256": "e9aca9325af2d71af939e199142ef4b67144e008aa3653f88bfc5a8f848560af",
+      "gitBlob": "99972d795c210cd97c3cec3fa0a271e67198add4"
+    }
+  ],
+  "actualWebsiteSource": "e09d7b40e64e099ef388a84465994e407d4b3b14",
+  "canonicalWebsiteVersion": "0.1.10",
+  "canonicalOriginalArtifact": {
+    "path": "/home/emsenn/info/lib/emsenn/services/561-group/services/561-group-services-section/services/561-group-operations-services-section/services/cold-red-gate-services-section/data/logs/publisher-storage-recovery-logs/2026-10-21-incumbent-env-v1/actual-original-koios-site-0.1.10-canonical-artifact-receiving.json",
+    "sha256": "82abd91cc17b255a3378039ed8c3615700466a09a1aca24529b75164fa6b0b62",
+    "rootIndependentlyVerified": "Actual129690B archive exactSHA512/manifestname/version/gitHead; no duplicatefetch/PUT"
+  },
+  "actualQualifiedWebsite": "Original173native public tests passed on exactsource, previously independentreceived; not rerun for selectionJSON.",
+  "applicationPatch": "OriginalCode23 authoritativeversionindex/planner .42occupied\u2192.43absent; all other dependency/config fields preserved.",
+  "workflowAdmission": "Actualthree workflow sources received; package/config paths excluded from releasecontract; newsroom workflow manualonly; no CIactivation/dispatch.",
+  "inputCorrection": "Initial plan incorrectly projected versions from wrapper rather than packument and falsely observed0; retained antecedent. V2 validatesreachable/found/versionobject and captures authoritativefullpackument; firstplan notused.",
+  "status": "SOURCE_ONLY_NOT_PUBLISHED_DEPLOYED_OR_LIVE",
+  "remaining": [
+    "Independent exactsource/applicability receiving",
+    "Fresh source/admission +normal existing source formation/integration",
+    "Originalpublisher canonicalappartifact+exactconsumerGuixrelease",
+    "LiveKoiosstorageowner migration before newwrites; originaleditorialauthority/preview/rollback/publicmetadata/articleidreceiving preserved"
+  ],
+  "automationDefect": "Originalpublisher advanced websiteGitlink but didnotadvance matching application dependency+website-release SRI; receiving/selection contract needs source-owner automation withoutlosing originalqualifiededitorial inputs."
+}

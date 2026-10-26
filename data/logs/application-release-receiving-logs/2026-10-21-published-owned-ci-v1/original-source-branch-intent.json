@@ -1,0 +1,13 @@
+{
+  "request": {
+    "requestId": "koios-website-0-1-10-source-branch-20261021",
+    "workRef": "https://github.com/causeway-services/koios.news/issues/40",
+    "repositoryId": 1408904976,
+    "effect": {
+      "kind": "branch.create",
+      "branch": "codex/receive-koios-website-0-1-10-20261021",
+      "baseSha": "d0859ddd3d6cdfea593800570d6c6050d87c4bef"
+    }
+  },
+  "reviewSHA256": "c91deca9e911041bb964abb27297e0a22ac64f85aa954af656da886757586419"
+}

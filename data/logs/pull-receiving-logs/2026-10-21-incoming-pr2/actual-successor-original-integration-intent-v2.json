@@ -1,0 +1,68 @@
+{
+  "request": {
+    "repository": "causeway-services/koios-news-site",
+    "repositoryId": 1425790914,
+    "requestId": "koios-owned-ci-source-integration-20261021",
+    "workRef": "https://github.com/causeway-services/koios-news-site/pull/4",
+    "number": 4,
+    "expectedHeadSha": "68630f0e624206ddbe2a1e01c521716787bb5764",
+    "expectedDefaultSha": "30857a9597b061b1ccdc7058ef80a2b5c6043a9e",
+    "receivingRef": "https://github.com/causeway-services/koios-news-site/pull/4"
+  },
+  "receiving": {
+    "repository": "causeway-services/koios-news-site",
+    "repositoryId": 1425790914,
+    "requestId": "koios-owned-ci-source-receiving-20261021",
+    "workRef": "https://github.com/causeway-services/koios-news-site/pull/4",
+    "branch": "codex/keep-koios-ci-state-in-section-data-20261021",
+    "headSha": "68630f0e624206ddbe2a1e01c521716787bb5764",
+    "defaultSha": "30857a9597b061b1ccdc7058ef80a2b5c6043a9e",
+    "consumerEvidence": [
+      "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/records/newswire-receiving-records/2026-10-21-owned-ci-successor-source-review.json",
+      "https://github.com/causeway-services/koios-news-site/actions/runs/39678446509"
+    ]
+  },
+  "source": {
+    "state": "SOURCE_RECEIVED",
+    "receipt": {
+      "kind": "github.branch-receiving.disposition.v1",
+      "state": "received",
+      "plan": {
+        "repository": "causeway-services/koios-news-site",
+        "repositoryId": 1425790914,
+        "requestId": "koios-owned-ci-source-receiving-20261021",
+        "workRef": "https://github.com/causeway-services/koios-news-site/pull/4",
+        "branch": "codex/keep-koios-ci-state-in-section-data-20261021",
+        "headSha": "68630f0e624206ddbe2a1e01c521716787bb5764",
+        "defaultSha": "30857a9597b061b1ccdc7058ef80a2b5c6043a9e",
+        "consumerEvidence": [
+          "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/records/newswire-receiving-records/2026-10-21-owned-ci-successor-source-review.json",
+          "https://github.com/causeway-services/koios-news-site/actions/runs/39678446509"
+        ]
+      },
+      "repositoryId": 1425790914,
+      "repository": "causeway-services/koios-news-site",
+      "branch": "codex/keep-koios-ci-state-in-section-data-20261021",
+      "headSha": "68630f0e624206ddbe2a1e01c521716787bb5764",
+      "defaultSha": "30857a9597b061b1ccdc7058ef80a2b5c6043a9e",
+      "workRef": "https://github.com/causeway-services/koios-news-site/pull/4",
+      "receivingRef": "https://github.com/causeway-services/koios-news-site/pull/4",
+      "receivedBy": "emsenn",
+      "evidenceRef": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/records/newswire-receiving-records/2026-10-21-owned-ci-successor-source-review.json",
+      "consumerEvidence": [
+        "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/records/newswire-receiving-records/2026-10-21-owned-ci-successor-source-review.json",
+        "https://github.com/causeway-services/koios-news-site/actions/runs/39678446509"
+      ],
+      "receivedAt": "2026-10-21T21:41:16.081Z"
+    }
+  },
+  "checks": [
+    {
+      "id": 119500042817,
+      "name": "structured-data",
+      "head_sha": "68630f0e624206ddbe2a1e01c521716787bb5764",
+      "conclusion": "success",
+      "details_url": "https://github.com/causeway-services/koios-news-site/actions/runs/39678446509/job/119500042817"
+    }
+  ]
+}

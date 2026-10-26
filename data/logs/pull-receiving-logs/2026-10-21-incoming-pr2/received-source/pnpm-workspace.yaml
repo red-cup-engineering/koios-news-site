@@ -1,0 +1,14 @@
+minimumReleaseAge: 1440
+minimumReleaseAgeStrict: true
+overrides:
+  '@red-cup-engineering/semiotic-content-address': 0.1.1
+minimumReleaseAgeExclude:
+  - '@red-cup-engineering/signcell@0.12.1'
+  - '@red-cup-engineering/semiotic-content-address@0.1.1'
+  - '@red-cup-engineering/computer-data-engineering-services-section@0.3.1'
+  - '@red-cup-engineering/metrologic@0.13.0'
+# Exact transitive lifecycle-script approvals for the locked Wrangler runtime.
+# No blanket execution grant; version changes require separate review.
+allowBuilds:
+  'esbuild@0.28.1': true
+  'workerd@1.20260828.1': true

@@ -1,0 +1,17 @@
+{
+  "request": {
+    "requestId": "koios-website-0-1-10-source-selection-20261021",
+    "workRef": "https://github.com/causeway-services/koios.news/issues/40",
+    "repositoryId": 1408904976,
+    "effect": {
+      "kind": "file.put",
+      "branch": "codex/receive-koios-website-0-1-10-20261021",
+      "path": "config/website-release.json",
+      "content": "{\n  \"kind\": \"koios.website-release/v1\",\n  \"source\": {\n    \"repository\": \"causeway-services/koios.news\",\n    \"revision\": \"d0859ddd3d6cdfea593800570d6c6050d87c4bef\",\n    \"directory\": \"services/website\"\n  },\n  \"package\": {\n    \"registry\": \"https://registry.561.group/\",\n    \"name\": \"@causeway-services/koios-news-site\",\n    \"version\": \"0.1.10\",\n    \"integrity\": \"sha512-i8Zt1oMkawHDkCCpdBriy5HEUt9WoWo2MfTfefKWk8vW4VCArL36Pat11Z+zrZ3uU3rhC8MQHyfluSxYKlvbuw==\"\n  }\n}\n",
+      "message": "Receive the published Koios website 0.1.10 in its application",
+      "expectedBranchSha": "ffab7ccc6a24cb550fcbee4a6fa1cedc3d0b9740",
+      "expectedBlobSha": "eaef2bab623f01023950f71fa35dfe67f2337479"
+    }
+  },
+  "reviewSHA256": "c91deca9e911041bb964abb27297e0a22ac64f85aa954af656da886757586419"
+}

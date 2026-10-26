@@ -1,0 +1,27 @@
+{
+  "atUnix": 1792625734.964434,
+  "unit": {
+    "MainPID": "556179",
+    "InvocationID": "029ef98b972244b48a3ea436b2e294ac"
+  },
+  "expectedTwoArgumentShape": true,
+  "argv": [
+    "/gnu/store/kba00zrnc1d1cg9bkx0krpvc2sp7wzrh-node-24.18.0/bin/node",
+    "/gnu/store/vhh6wmw8lj2cf017xspgyyglvkx5i4qw-cold-red-gate-deployment-1/node_modules/@red-cup-engineering/github-repository-hosting-service/scripts/receive-submodule-pin-events.mjs"
+  ],
+  "registryConfiguration": {
+    "path": "/gnu/store/vhh6wmw8lj2cf017xspgyyglvkx5i4qw-cold-red-gate-deployment-1/deployment/registry.json",
+    "sha256": "d9fc6b1f3b388fe6ccec422e811c39602d7e9b129bc29f41ae9c91bcbf3b403c",
+    "storage": "/home/emsenn/info/lib/emsenn/services/561-group/services/561-group-services-section/services/561-group-operations-services-section/services/cold-red-gate-services-section/data/state/npm-registry-state/storage",
+    "htpasswd": null
+  },
+  "programManifest": {
+    "declared": "/gnu/store/vhh6wmw8lj2cf017xspgyyglvkx5i4qw-cold-red-gate-deployment-1/node_modules/@red-cup-engineering/github-repository-hosting-service/package.json",
+    "realpath": "/gnu/store/bnjwj5p9anviw07da09fwp9frp9idjns-registry-runtime/node_modules/.pnpm/@red-cup-engineering+github-repository-hosting-service@0.3.0_@red-cup-engineering+infer_54403255a5736d51ba40600e95a43027/node_modules/@red-cup-engineering/github-repository-hosting-service/package.json",
+    "sha256": "0b67df522ed18956cee3e0e4c1774942a4bc7c592e0a231332dc4d390bd65614",
+    "name": "@red-cup-engineering/github-repository-hosting-service",
+    "version": "0.3.0",
+    "gitHead": "0918a7ede5657f8fdbdf8a32e0f16530675620dd"
+  },
+  "selectedScriptSHA256": "9e4633cbbb8be98b45ff3d94f7e1f80f31d27dc14d3eb12db627b6cd56b0733f"
+}

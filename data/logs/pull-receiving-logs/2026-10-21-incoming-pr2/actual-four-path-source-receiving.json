@@ -1,0 +1,79 @@
+{
+  "repo": {
+    "id": 1425790914,
+    "full_name": "causeway-services/koios-news-site"
+  },
+  "tree": {
+    "commit": "5f8bfe2f37516922bce24e927d8d7c53f13f8ebb",
+    "rootTreeSha": "075a62187a37f1ad0fae415a105f914d8a357b24",
+    "coverage": "selected-paths-only",
+    "tree": [
+      {
+        "path": ".github/workflows/publisher-entity.yml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "c713f5546b7eb6839d464b9347e5d75b01481834",
+        "size": 1577
+      },
+      {
+        "path": "pnpm-workspace.yaml",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "58719dd91a2f38be6df58f5c005c0baa54e9fd8a",
+        "size": 589
+      },
+      {
+        "path": "src/render/templates.mjs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "9b0d8ac578912b5a091fa75a7642eea3d9c5df8e",
+        "size": 33233
+      },
+      {
+        "path": "test/structured-data.test.mjs",
+        "mode": "100644",
+        "type": "blob",
+        "sha": "134ac7e56ce6b238d7a1f6f3f6227668336e7929",
+        "size": 8579
+      }
+    ]
+  },
+  "rows": [
+    {
+      "path": ".github/workflows/publisher-entity.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c713f5546b7eb6839d464b9347e5d75b01481834",
+      "size": 1577,
+      "file": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/received-source/.github/workflows/publisher-entity.yml",
+      "sha256": "719564de64ba87077be5cd8c86ac36c07bd69c097e97de935bd1d0dd337bbcfe"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "58719dd91a2f38be6df58f5c005c0baa54e9fd8a",
+      "size": 589,
+      "file": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/received-source/pnpm-workspace.yaml",
+      "sha256": "66b6daa8c9940eb0217f1b1d5db764d9b561804c0fda48b8b84d961c641065dc"
+    },
+    {
+      "path": "src/render/templates.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9b0d8ac578912b5a091fa75a7642eea3d9c5df8e",
+      "size": 33233,
+      "file": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/received-source/src/render/templates.mjs",
+      "sha256": "3fc27893d24169e0d7dcd655052c9c94bd1310d01c68fd7d9aa30bb19a65b5a1"
+    },
+    {
+      "path": "test/structured-data.test.mjs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "134ac7e56ce6b238d7a1f6f3f6227668336e7929",
+      "size": 8579,
+      "file": "/home/emsenn/info/lib/emsenn/services/561-group/services/public-services-section/services/public-media-services-section/services/public-news-media-services-section/sites/koios.news/services/website/data/logs/pull-receiving-logs/2026-10-21-incoming-pr2/received-source/test/structured-data.test.mjs",
+      "sha256": "e2c4487e865f8712f494c2a346457dc73fc7ff30e3a5857c3c26dc8dc3346ab0"
+    }
+  ]
+}

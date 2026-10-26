@@ -3,10 +3,18 @@ minimumReleaseAgeStrict: true
 overrides:
   '@red-cup-engineering/semiotic-content-address': 0.1.1
 minimumReleaseAgeExclude:
-  - '@red-cup-engineering/signcell@0.12.1'
-  - '@red-cup-engineering/semiotic-content-address@0.1.1'
-  - '@red-cup-engineering/computer-data-engineering-services-section@0.3.1'
-  - '@red-cup-engineering/metrologic@0.13.0'
+  # House releases have no artificial age delay (Leader correction, 2026-10-20; 2026-10-26).
+  - '@561-group/*'
+  - '@causeway-services/*'
+  - '@coesite-operations/*'
+  - '@emsenn/*'
+  - '@emsweb/*'
+  - '@harmonious-union/*'
+  - '@koios-news/*'
+  - '@lenticule-science/*'
+  - '@red-cup-engineering/*'
+  - '@red-cup-science/*'
+  - '@rsc-quiescent/*'
 # Exact transitive lifecycle-script approvals for the locked Wrangler runtime.
 # No blanket execution grant; version changes require separate review.
 allowBuilds:

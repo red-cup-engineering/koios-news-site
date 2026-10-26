@@ -76,7 +76,7 @@ export function mountHouseAds() {
         link.href = origin + "/click?slot=" + encodeURIComponent(slot) +
           "&property=" + encodeURIComponent(property) +
           "&creative=" + encodeURIComponent(creative.id) +
-          (paid ? "&context=" + encodeURIComponent(context) : "");
+          (context ? "&context=" + encodeURIComponent(context) : "");
         link.rel = paid ? "sponsored nofollow noopener noreferrer" : "noopener noreferrer";
         const title = document.createElement("strong");
         title.textContent = creative.title;

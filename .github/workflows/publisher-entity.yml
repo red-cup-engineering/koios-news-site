@@ -7,6 +7,10 @@ on:
       - 'test/carrier-probe-retry.test.mjs'
       - 'src/render/head.mjs'
       - 'test/structured-data.test.mjs'
+      - 'src/render/corrections.mjs'
+      - 'scripts/verify-corrections-receiving.mjs'
+      - 'test/correction-intake.test.mjs'
+      - 'test/corrections-http-receiving.test.mjs'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -19,12 +23,21 @@ on:
       - 'test/carrier-probe-retry.test.mjs'
       - 'src/render/head.mjs'
       - 'test/structured-data.test.mjs'
+      - 'src/render/corrections.mjs'
+      - 'scripts/verify-corrections-receiving.mjs'
+      - 'test/correction-intake.test.mjs'
+      - 'test/corrections-http-receiving.test.mjs'
       - 'package.json'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
       - '.github/workflows/publisher-entity.yml'
 permissions:
   contents: read
+# Only source-identical work may consume this exact full dependency closure.
+# Superseded PR commits cannot run an overlapping expensive frozen install.
+concurrency:
+  group: publisher-entity-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   structured-data:
     runs-on: ubuntu-latest
@@ -72,7 +85,17 @@ jobs:
           node --check test/structured-data.test.mjs
           node --check src/carrier.mjs
           node --check test/carrier-probe-retry.test.mjs
+          node --check src/render/corrections.mjs
+          node --check scripts/verify-corrections-receiving.mjs
+          node --check test/correction-intake.test.mjs
+          node --check test/corrections-http-receiving.test.mjs
+      # Native standard-library receiving must still run when our registry is unavailable.
+      # Full publisher qualification below remains mandatory for release.
+      - name: Receive corrections intake, privacy refusals and negative cases without registry
+        timeout-minutes: 2
+        run: node --test test/correction-intake.test.mjs test/corrections-http-receiving.test.mjs
       - name: Install original declared dependencies without substituting fixtures
+        timeout-minutes: 5
         run: |
           corepack enable
           pnpm install --frozen-lockfile --store-dir "$PNPM_STORE_DIR"

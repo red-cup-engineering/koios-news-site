@@ -41,7 +41,7 @@ test("declared first-party campaign remains correctly labelled and clicks the or
   assert.equal(host.children.length, 2);
   assert.equal(host.children[0].textContent, "From the publisher");
   assert.equal(host.children[1].href,
-    "https://ads.561.group/click?slot=afterArticle&property=koios-news&creative=briefing");
+    "https://ads.561.group/click?slot=afterArticle&property=koios-news&creative=briefing&context=sport%2Cfootball");
   assert.equal(host.children[1].rel, "noopener noreferrer");
   assert.equal(requests[0].options.credentials, "omit");
 });

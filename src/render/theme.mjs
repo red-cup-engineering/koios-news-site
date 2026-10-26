@@ -148,6 +148,7 @@ article.h-entry > .p-name { font-size: clamp(1.8rem, 5vw, 2.7rem); line-height: 
 .article-hero figcaption { font-family: var(--sans); font-size: .74rem; color: var(--ink-soft); padding: .5rem .2rem; }
 .article-media { margin-block: 2rem; border-top: 2px solid var(--rule); }
 .article-media audio, .article-media video { display: block; width: 100%; max-width: 100%; margin-block: 1rem; }
+.article-media video { aspect-ratio: 16 / 9; object-fit: contain; }
 .article-media-transcript { overflow-wrap: anywhere; }
 .article-media-links, .article-media-credit { font-family: var(--sans); font-size: .9rem; }
 .e-content { font-size: 1.15rem; line-height: 1.65; }

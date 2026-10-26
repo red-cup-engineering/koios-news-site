@@ -5,7 +5,7 @@ import {mkdtempSync, readFileSync, rmSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {fileURLToPath} from 'node:url';
-import {buildConfiguredProperty} from '../scripts/build-property.mjs';
+import {buildConfiguredPropertyWithMedia} from '../scripts/build-property.mjs';
 import {stagedArtifacts} from '../src/build.mjs';
 
 const cli=fileURLToPath(new URL('../scripts/build-property.mjs', import.meta.url));
@@ -39,13 +39,13 @@ test('the original two-argument build invocation remains supported',()=>{
   } finally {rmSync(root,{recursive:true,force:true});}
 });
 
-test('the explicit build instant reaches the unchanged renderer byte-for-byte',()=>{
+test('the explicit build instant reaches the measured publication entrance byte-for-byte',async()=>{
   const root=mkdtempSync(join(tmpdir(),'koios-build-cli-'));
   try {
     const output=join(root,'public'),expected=join(root,'expected'),config=configuredProperty(root);
     const result=run([config,output,'--as-of',instant]);
     assert.equal(result.status,0,result.stderr);
-    buildConfiguredProperty(config,expected,{asOf:new Date(instant)});
+    await buildConfiguredPropertyWithMedia(config,expected,{asOf:new Date(instant)});
     const files=stagedArtifacts(expected).map(x=>x.file);
     assert.deepEqual(stagedArtifacts(output).map(x=>x.file),files);
     for(const file of files) assert.ok(readFileSync(join(output,file)).equals(readFileSync(join(expected,file))),file);

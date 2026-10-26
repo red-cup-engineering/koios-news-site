@@ -16,7 +16,9 @@ import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 
 import { buildTheme } from "./render/theme.mjs";
 import { renderArticleArtSvg, articleArtAlt } from "./render/article-art.mjs";
-import { renderArticleFingerprint, renderBrandPng, renderBrandLogoPng, fingerprintCropImages } from "./render/article-fingerprint.mjs";
+import { renderArticleFingerprint, renderBrandPng, renderBrandLogoPng } from "./render/article-fingerprint.mjs";
+import { prepareArticleMedia, selectPublicationImages } from "./images.mjs";
+import { parsePublicationMedia, receivePublicationMedia } from "./publication-media.mjs";
 import { renderCoverage, renderNinjs, renderPublicationProvenance, renderSourceRoll } from "./render/public-records.mjs";
 import { renderMarkdown, renderArticleMarkdown, escapeHtml } from "./render/markdown.mjs";
 import { faviconSvg, webManifest, absoluteUrl } from "./render/head.mjs";
@@ -44,7 +46,7 @@ const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/u;
 const ISO_INSTANT = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?)?$/u;
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const XML_INVALID_CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
-const STRUCTURED_ARRAY_FIELDS = new Set(["claims", "omissions", "corrections"]);
+const STRUCTURED_ARRAY_FIELDS = new Set(["claims", "omissions", "corrections", "media"]);
 const STRING_ARRAY_FIELDS = new Set(["categories", "tags", "keywords"]);
 const PAGE_SIZE = 12;
 /** Paths whose file names carry a digest of their bytes, and so may be cached forever. */
@@ -190,7 +192,7 @@ export function citationRenderer(references) {
 /**
  * A deliberately narrow front-matter codec for the fields the specification
  * names (§5): the public editorial fields plus the optional `claims`,
- * `omissions`, and `corrections` ledgers, given as single-line JSON arrays of
+ * `omissions`, and `corrections` ledgers, plus admitted `media` objects, given as single-line JSON arrays of
  * objects. Nested indented blocks (a `references:` or `koios:` block, say)
  * are not public-carrier input and are skipped, matching the retired Koios
  * carrier's codec.
@@ -304,6 +306,7 @@ export function parsePost(source, file) {
     file, title: publicTitle, date, publishedAt, draft, withdrawn, originalPermalink: originalPermalink(lines.slice(1, close)), slug, body, author, authorSlug: slugify(author),
     description, dek: publicScalar("dek"), section: publicScalar("section"), modified: publicScalar("modified"),
     image: publicScalar("image"), imageAlt: publicScalar("imageAlt"), imageCredit: publicScalar("imageCredit"),
+    media: parsePublicationMedia(frontMatter.media, file),
     categories, tags: [...new Set([...publicStrings("tags"), ...keywords])], keywords, references, referenceRecords,
     claims: Object.freeze(claims), omissions: Object.freeze(omissions), corrections: Object.freeze(corrections),
     license, licenseUrl, syndicationRights, adUnit: articleAdUnit(lines.slice(1, close)), sourceDigest: digest(source),
@@ -536,7 +539,7 @@ function cspOrigin(value) {
   return url.origin;
 }
 
-function assetHeaders(property) {
+function assetHeaders(property, posts = []) {
   const adOrigin = property.monetization?.houseAds?.server ? ` ${cspOrigin(property.monetization.houseAds.server)}` : "";
   const aadsOrigin = property.monetization?.aads ? " https://acceptable.a-ads.com" : "";
   const crawl = property.monetization?.payPerCrawl;
@@ -561,30 +564,43 @@ function assetHeaders(property) {
   // stay mutable. Cloudflare merges every matching rule, so these rules carry
   // nothing but their own header.
   const immutable = IMMUTABLE_PATHS.map((path) => `\n${path}\n  Cache-Control: public, max-age=31536000, immutable\n`).join("");
+  // One suffix rule per received extension keeps this below Pages' 100-rule
+  // bound as the archive grows. Only admitted assets are copied into /assets/.
+  // The bounded receiver has already checked each MIME/extension pairing.
+  const mediaTypes = new Map(posts.flatMap(post => post.media.flatMap(item => [item, item.caption].filter(Boolean)))
+    .map(item => [`/assets/*.${new URL(item.contentUrl).pathname.split(".").at(-1)}`, item.encodingFormat]));
+  const mediaHeaders = [...mediaTypes].sort(([left], [right]) => bytewise(left, right))
+    .map(([path, mime]) => `\n${path}\n  Content-Type: ${mime}\n`).join("");
   return `/*
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'${adOrigin}; frame-src 'self'${aadsOrigin}; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
-` + articlePrice + immutable;
+` + articlePrice + immutable + mediaHeaders;
 }
 
-/**
- * Resolve an article's Open Graph card: `/assets/og/<slug>.png` when the
- * content root's assets carry it, else the property's configured default,
- * else the article's hero image. Image files are never generated here — per
- * the specification's images section, that is a hero/OG-composition
- * responsibility elsewhere in the app.
- * @param {object} post
- * @param {object} property
- * @param {string} contentDir
- * @returns {string|undefined} absolute URL, or undefined when nothing is available
+function propertyPosts({ property, contentDir, publishedPostsDir }) {
+  return readPosts(resolve(contentDir), property.content?.legacyPublishedSections,
+    property.content?.postsDirectory ?? "posts", property.content?.defaultPublishedSection,
+    publishedPostsDir, property.content?.editorialProjections, property.content?.requirePublishedLedger === true);
+}
+
+/** Prepare article images through the original image owner before the same
+ * synchronous renderer seals its complete output. No manuscript is changed.
  */
-function resolveOgImage(post, property, contentDir) {
-  const perArticle = join(contentDir, "assets", "og", `${post.slug}.png`);
-  if (existsSync(perArticle)) return absoluteUrl(property.origin, `/assets/og/${post.slug}.png`);
-  if (property.images?.defaultOgImage) return absoluteUrl(property.origin, property.images.defaultOgImage);
-  return absoluteUrl(property.origin, `/fingerprints/${post.slug}.png`);
+export async function buildPropertyWithMedia(options) {
+  const input = { ...options, property: structuredClone(options.property),
+    ...(options.asOf === undefined ? {} : { asOf: new Date(options.asOf) }) };
+  const { property, contentDir } = input;
+  const sections = new Map((property.sections ?? []).map(section => [section.slug, section]));
+  const posts = propertyPosts(input).map(post => {
+    const section = sections.get(post.section);
+    if (!section) throw new Error(`${post.file}: unknown section "${post.section}"`);
+    return { ...post, ...selectArticleHeroImage(post, section.title, articleArtAlt), sectionTitle: section.title };
+  });
+  const preparedArticleMedia = await prepareArticleMedia({ posts, property, contentRoot: contentDir,
+    palette: buildTheme(property.theme).seeds });
+  return buildProperty({ ...input, preparedArticleMedia });
 }
 
 /**
@@ -631,26 +647,46 @@ export function propertyStateRoot(property, environment = process.env) {
   return join(environment.XDG_STATE_HOME || join(homedir(), ".local", "state"), "561-group", "news-property", property.name);
 }
 
-export function buildProperty({ property, contentDir, outputDir, claimStoreDir, sourceFeedsPath, publishedPostsDir, publicationEvidenceDir, asOf = new Date() }) {
+export function buildProperty({ property, contentDir, outputDir, claimStoreDir, sourceFeedsPath, publishedPostsDir, publicationEvidenceDir, preparedArticleMedia, asOf = new Date() }) {
   if (typeof property !== "object" || property === null) throw new TypeError("property is required");
   if (typeof contentDir !== "string" || typeof outputDir !== "string") throw new TypeError("contentDir and outputDir are required");
   const postsDirectory = property.content?.postsDirectory ?? "posts";
   const recordNamespace = property.records?.namespace ?? "news-property";
   if (typeof recordNamespace !== "string" || !/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/u.test(recordNamespace)) throw new TypeError("property.records.namespace is invalid");
   const recordKind = (name) => `${recordNamespace}.${name}/v1`;
-  const posts = readPosts(resolve(contentDir), property.content?.legacyPublishedSections, postsDirectory, property.content?.defaultPublishedSection, publishedPostsDir, property.content?.editorialProjections, property.content?.requirePublishedLedger === true);
+  const posts = propertyPosts({ property, contentDir, publishedPostsDir });
+  if (preparedArticleMedia !== undefined && (!(preparedArticleMedia instanceof Map) ||
+      preparedArticleMedia.size !== posts.length || posts.some(post => !preparedArticleMedia.has(post.slug))))
+    throw new Error("Prepared media must cover the same admitted publication posts");
   const sections = new Map((property.sections ?? []).map((section) => [section.slug, section]));
   const publicationEvidence = readPublicationEvidence(publicationEvidenceDir);
   const enriched = posts.map((post) => {
     const section = sections.get(post.section);
     if (section === undefined) throw new Error(`${post.file}: unknown section "${post.section}"`);
     const hero = selectArticleHeroImage(post, section.title, articleArtAlt);
+    const media = selectPublicationImages({ post: { ...post, ...hero }, property, contentRoot: contentDir,
+      prepared: preparedArticleMedia?.get(post.slug) });
+    const audiovisual = receivePublicationMedia(post.media, { origin: property.origin, contentRoot: contentDir });
+    const descriptiveHero = media.hero ? { ...media.hero, alt: hero.imageAlt, creditText: hero.imageCredit } : undefined;
+    const social = media.social && descriptiveHero && media.social.bytes.equals(descriptiveHero.bytes)
+      ? { ...media.social, alt: descriptiveHero.alt, creditText: descriptiveHero.creditText } : media.social;
+    const schemaImages = [...new Map([descriptiveHero, social].filter(Boolean)
+      .map(image => [image.url, { url: image.url, width: image.width, height: image.height,
+        ...(image.creditText ? { creditText: image.creditText } : {}) }])).values()];
     return {
       ...post,
       ...hero,
+      image: media.hero ? `/${media.hero.path}` : hero.image,
       ...resolvePublicationInstants(post, publicationEvidence.get(post.slug)),
       sectionTitle: section.title,
-      ogImage: resolveOgImage({ ...post, image: hero.image }, property, contentDir),
+      media: audiovisual.media,
+      mediaFiles: [...[media.hero, media.social].filter(Boolean), ...audiovisual.files], schemaImages,
+      imageWidth: descriptiveHero?.width ?? (media.hero ? undefined : 1200),
+      imageHeight: descriptiveHero?.height ?? (media.hero ? undefined : 675),
+      imageCaption: media.hero ? undefined : "Headline graphic; no documentary image accompanies this report.",
+      ogImage: social?.url, ogImageAlt: social?.alt,
+      ogImageWidth: social?.width, ogImageHeight: social?.height,
+      ogImageCaption: social?.caption, ogImageCredit: social?.creditText,
     };
   });
 
@@ -676,7 +712,7 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
     }
   };
   const setJson = (path, value) => set(path, `${JSON.stringify(value, null, 2)}\n`);
-  set("_headers", assetHeaders(property));
+  set("_headers", assetHeaders(property, enriched));
   const indexNowKey = property.distribution?.indexNow?.key;
   if (indexNowKey != null) {
     if (typeof indexNowKey !== "string" || !/^[A-Za-z0-9-]{8,128}$/u.test(indexNowKey)) {
@@ -716,6 +752,11 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
   set("logo.png", renderBrandLogoPng(property));
   set("manifest.webmanifest", `${JSON.stringify(webManifest({ name: property.name, accent: theme.seeds.accent, surface: theme.seeds.surface }), null, 2)}\n`);
   for (const post of enriched) {
+    for (const media of post.mediaFiles) {
+      if (files.has(media.path) && !Buffer.from(files.get(media.path)).equals(media.bytes))
+        throw new Error("Selected publication asset has conflicting bytes");
+      set(media.path, media.bytes);
+    }
     if (post.image === `/assets/article-art/${post.slug}.svg`) {
       set(`assets/article-art/${post.slug}.svg`, renderArticleArtSvg({
         title: post.title,
@@ -727,7 +768,6 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
     }
     const fingerprint = renderArticleFingerprint(post, property);
     for (const [path, contents] of fingerprint) set(path, contents);
-    post.schemaImages = fingerprintCropImages(fingerprint, post.slug, property.origin);
   }
   set("coverage.json", renderCoverage(enriched, property));
   set("ninjs.json", renderNinjs(enriched, property, citationRenderer));

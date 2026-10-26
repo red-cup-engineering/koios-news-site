@@ -184,21 +184,13 @@ test("an article page carries a trimmed title, bare social titles, a breadcrumb,
   });
 });
 
-test("article JSON-LD offers 1x1, 4x3 and 16x9 raster ImageObjects whose files exist with those dimensions", () => {
-  withSite({}, (built) => {
+test("a synchronous render without editorial raster media does not label provenance fingerprint crops as article images", () => {
+  withSite({mutateProperty:property=>{delete property.images.defaultOgImage;}}, (built) => {
     const images = ofType(built.read(`posts/${ARTICLE}/index.html`), "NewsArticle").image;
-    assert.ok(Array.isArray(images));
-    const ratios = new Map();
-    for (const image of images) {
-      assert.equal(image["@type"], "ImageObject");
-      const path = new URL(image.url).pathname.slice(1);
-      const png = built.bytes(path);
-      assert.equal(png.readUInt32BE(16), image.width);
-      assert.equal(png.readUInt32BE(20), image.height);
-      ratios.set(`${image.width}x${image.height}`, path);
-    }
-    assert.deepEqual([...ratios.keys()].sort(), ["1200x675", "675x675", "900x675"]);
-    for (const path of ratios.values()) assert.match(path, /^fingerprints\/h\/[a-z0-9-]+\.[0-9a-f]{16}\.(?:1x1|4x3|16x9)\.png$/u);
+    assert.equal(images,undefined);
+    assert.ok(built.exists(`fingerprints/${ARTICLE}.json`));
+    assert.ok(built.exists(`fingerprints/${ARTICLE}.png`));
+    assert.doesNotMatch(built.read(`posts/${ARTICLE}/index.html`),/<meta (?:property="og:image"|name="twitter:image")/u);
   });
 });
 

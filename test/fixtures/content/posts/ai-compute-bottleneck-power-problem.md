@@ -4,9 +4,6 @@ date: 2026-06-19
 draft: false
 section: "technology"
 modified: 2026-06-20
-image: "/assets/hero/ai-compute.svg"
-imageAlt: "A stylized data center at dusk"
-imageCredit: "Koios.News illustration"
 author: "Nik Koios"
 description: "The AI compute bottleneck is shifting from model architecture into power, cooling, capital, and grid politics."
 summary: "The AI compute bottleneck is no longer only a chip or model problem. New claims from Subquadratic and Tensordyne point toward efficiency pressure, while data-center flexibility and orbital-compute proposals show the same constraint moving into power, cooling, capital, and public infrastructure."

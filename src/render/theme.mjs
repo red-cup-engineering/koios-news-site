@@ -146,6 +146,10 @@ article.h-entry > .p-name { font-size: clamp(1.8rem, 5vw, 2.7rem); line-height: 
 .article-hero { margin: 0 0 1.6rem; border: 5px solid var(--rule); background: var(--surface-deep); }
 .article-hero img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border: 0; margin: 0; }
 .article-hero figcaption { font-family: var(--sans); font-size: .74rem; color: var(--ink-soft); padding: .5rem .2rem; }
+.article-media { margin-block: 2rem; border-top: 2px solid var(--rule); }
+.article-media audio, .article-media video { display: block; width: 100%; max-width: 100%; margin-block: 1rem; }
+.article-media-transcript { overflow-wrap: anywhere; }
+.article-media-links, .article-media-credit { font-family: var(--sans); font-size: .9rem; }
 .e-content { font-size: 1.15rem; line-height: 1.65; }
 .e-content > * + * { margin-top: 1.1rem; }
 .e-content h2 { font-family: var(--sans); font-weight: 800; font-size: 1.4rem; text-transform: uppercase;

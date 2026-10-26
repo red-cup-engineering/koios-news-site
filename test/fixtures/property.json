@@ -30,7 +30,7 @@
   },
   "images": {
     "hero": "generate",
-    "defaultOgImage": "/assets/og/default.png",
+    "defaultOgImage": "/assets/og/gate-audit-explainer.png",
     "creditRule": "Credit the generating provider unless a source image is licensed otherwise."
   },
   "distribution": {

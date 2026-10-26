@@ -13,6 +13,7 @@ import { renderHeadTags, newsArticleJsonLd, newsMediaOrganizationJsonLd, breadcr
 import { postInstants, publishedDay, latestModified } from "../publication-instants.mjs";
 import { aiAuthorshipStatement, authorPathFor, authorProfile, isDeskByline } from "./authors.mjs";
 import { LOGO_DIMENSIONS } from "./article-fingerprint.mjs";
+import { renderPublicationMedia } from "./media.mjs";
 
 const PAGE_SIZE = 12;
 const esc = escapeHtml;
@@ -228,7 +229,7 @@ export function storyCard(post, options = {}) {
   const cls = options.lead ? "story story--lead" : "story";
   const heading = options.lead ? "h1" : "h2";
   const image = options.showImage !== false && post.image
-    ? `<a class="story__image" href="/posts/${esc(post.slug)}/"><img src="${esc(post.image)}" alt="${esc(post.imageAlt ?? "")}"${post.imageWidth && post.imageHeight ? ` width="${post.imageWidth}" height="${post.imageHeight}"` : ""} loading="lazy" decoding="async"></a>`
+    ? `<a class="story__image" href="/posts/${esc(post.slug)}/"><img src="${esc(post.image)}" alt="${esc(post.imageAlt ?? "")}"${post.imageWidth && post.imageHeight ? ` width="${post.imageWidth}" height="${post.imageHeight}"` : ""}${options.lead ? ' fetchpriority="high"' : ' loading="lazy"'} decoding="async"></a>`
     : "";
   return `<article class="${cls}">${image}` +
     `<span class="story__kicker"><a href="/sections/${esc(post.section)}/">${esc(post.sectionTitle)}</a></span>` +
@@ -395,6 +396,7 @@ export function renderSyndicatedArticle(property, post) {
     width: post.ogImageWidth, height: post.ogImageHeight,
     caption: post.ogImageCaption, credit: post.ogImageCredit });
   return (post.dek ? `<p>${esc(post.dek)}</p>` : "") + image + post.bodyHtml +
+    renderPublicationMedia(post.media, { articleUrl: url(property, `/posts/${post.slug}/`) }) +
     renderLedgers(post.claims, post.omissions) + renderCorrectionNotice(post.corrections) +
     `<p>Published by ${esc(property.name)}: <a href="${esc(url(property, `/posts/${post.slug}/`))}">${esc(post.title)}</a>.</p>` +
     renderArticleRights(post);
@@ -505,6 +507,7 @@ export function renderArticlePage({ property, post: bare, allPosts, verification
     hero +
     navigation +
     `<div class="e-content">${withAdAfterLede(post.bodyHtml, inArticleAd)}</div>` +
+    renderPublicationMedia(post.media) +
     sources +
     `<p class="article-citation"><a href="/posts/${esc(post.slug)}/citation.json" download="${esc(post.slug)}.json">Cite this article (CSL-JSON)</a></p>` +
     houseAdSlot(property, "afterArticle", [post.section, ...(post.tags ?? [])]) +
@@ -540,6 +543,7 @@ export function renderArticlePage({ property, post: bare, allPosts, verification
       url: articleUrl,
       image: post.ogImage,
       images: post.schemaImages,
+      media: post.media,
       datePublished: post.publishedInstant,
       dateModified: post.modifiedInstant,
       author: {

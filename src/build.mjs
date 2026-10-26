@@ -18,6 +18,7 @@ import { buildTheme } from "./render/theme.mjs";
 import { renderArticleArtSvg, articleArtAlt } from "./render/article-art.mjs";
 import { renderArticleFingerprint, renderBrandPng, renderBrandLogoPng } from "./render/article-fingerprint.mjs";
 import { prepareArticleMedia, selectPublicationImages } from "./images.mjs";
+import { parsePublicationMedia, receivePublicationMedia } from "./publication-media.mjs";
 import { renderCoverage, renderNinjs, renderPublicationProvenance, renderSourceRoll } from "./render/public-records.mjs";
 import { renderMarkdown, renderArticleMarkdown, escapeHtml } from "./render/markdown.mjs";
 import { faviconSvg, webManifest, absoluteUrl } from "./render/head.mjs";
@@ -45,7 +46,7 @@ const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/u;
 const ISO_INSTANT = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z?)?$/u;
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/u;
 const XML_INVALID_CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
-const STRUCTURED_ARRAY_FIELDS = new Set(["claims", "omissions", "corrections"]);
+const STRUCTURED_ARRAY_FIELDS = new Set(["claims", "omissions", "corrections", "media"]);
 const STRING_ARRAY_FIELDS = new Set(["categories", "tags", "keywords"]);
 const PAGE_SIZE = 12;
 /** Paths whose file names carry a digest of their bytes, and so may be cached forever. */
@@ -191,7 +192,7 @@ export function citationRenderer(references) {
 /**
  * A deliberately narrow front-matter codec for the fields the specification
  * names (§5): the public editorial fields plus the optional `claims`,
- * `omissions`, and `corrections` ledgers, given as single-line JSON arrays of
+ * `omissions`, and `corrections` ledgers, plus admitted `media` objects, given as single-line JSON arrays of
  * objects. Nested indented blocks (a `references:` or `koios:` block, say)
  * are not public-carrier input and are skipped, matching the retired Koios
  * carrier's codec.
@@ -305,6 +306,7 @@ export function parsePost(source, file) {
     file, title: publicTitle, date, publishedAt, draft, withdrawn, originalPermalink: originalPermalink(lines.slice(1, close)), slug, body, author, authorSlug: slugify(author),
     description, dek: publicScalar("dek"), section: publicScalar("section"), modified: publicScalar("modified"),
     image: publicScalar("image"), imageAlt: publicScalar("imageAlt"), imageCredit: publicScalar("imageCredit"),
+    media: parsePublicationMedia(frontMatter.media, file),
     categories, tags: [...new Set([...publicStrings("tags"), ...keywords])], keywords, references, referenceRecords,
     claims: Object.freeze(claims), omissions: Object.freeze(omissions), corrections: Object.freeze(corrections),
     license, licenseUrl, syndicationRights, adUnit: articleAdUnit(lines.slice(1, close)), sourceDigest: digest(source),
@@ -537,7 +539,7 @@ function cspOrigin(value) {
   return url.origin;
 }
 
-function assetHeaders(property) {
+function assetHeaders(property, posts = []) {
   const adOrigin = property.monetization?.houseAds?.server ? ` ${cspOrigin(property.monetization.houseAds.server)}` : "";
   const aadsOrigin = property.monetization?.aads ? " https://acceptable.a-ads.com" : "";
   const crawl = property.monetization?.payPerCrawl;
@@ -562,12 +564,19 @@ function assetHeaders(property) {
   // stay mutable. Cloudflare merges every matching rule, so these rules carry
   // nothing but their own header.
   const immutable = IMMUTABLE_PATHS.map((path) => `\n${path}\n  Cache-Control: public, max-age=31536000, immutable\n`).join("");
+  // One suffix rule per received extension keeps this below Pages' 100-rule
+  // bound as the archive grows. Only admitted assets are copied into /assets/.
+  // The bounded receiver has already checked each MIME/extension pairing.
+  const mediaTypes = new Map(posts.flatMap(post => post.media.flatMap(item => [item, item.caption].filter(Boolean)))
+    .map(item => [`/assets/*.${new URL(item.contentUrl).pathname.split(".").at(-1)}`, item.encodingFormat]));
+  const mediaHeaders = [...mediaTypes].sort(([left], [right]) => bytewise(left, right))
+    .map(([path, mime]) => `\n${path}\n  Content-Type: ${mime}\n`).join("");
   return `/*
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'${adOrigin}; frame-src 'self'${aadsOrigin}; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
   Referrer-Policy: strict-origin-when-cross-origin
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
-` + articlePrice + immutable;
+` + articlePrice + immutable + mediaHeaders;
 }
 
 function propertyPosts({ property, contentDir, publishedPostsDir }) {
@@ -657,6 +666,7 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
     const hero = selectArticleHeroImage(post, section.title, articleArtAlt);
     const media = selectPublicationImages({ post: { ...post, ...hero }, property, contentRoot: contentDir,
       prepared: preparedArticleMedia?.get(post.slug) });
+    const audiovisual = receivePublicationMedia(post.media, { origin: property.origin, contentRoot: contentDir });
     const descriptiveHero = media.hero ? { ...media.hero, alt: hero.imageAlt, creditText: hero.imageCredit } : undefined;
     const social = media.social && descriptiveHero && media.social.bytes.equals(descriptiveHero.bytes)
       ? { ...media.social, alt: descriptiveHero.alt, creditText: descriptiveHero.creditText } : media.social;
@@ -669,7 +679,8 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
       image: media.hero ? `/${media.hero.path}` : hero.image,
       ...resolvePublicationInstants(post, publicationEvidence.get(post.slug)),
       sectionTitle: section.title,
-      mediaFiles: [media.hero, media.social].filter(Boolean), schemaImages,
+      media: audiovisual.media,
+      mediaFiles: [...[media.hero, media.social].filter(Boolean), ...audiovisual.files], schemaImages,
       imageWidth: descriptiveHero?.width ?? (media.hero ? undefined : 1200),
       imageHeight: descriptiveHero?.height ?? (media.hero ? undefined : 675),
       imageCaption: media.hero ? undefined : "Headline graphic; no documentary image accompanies this report.",
@@ -701,7 +712,7 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
     }
   };
   const setJson = (path, value) => set(path, `${JSON.stringify(value, null, 2)}\n`);
-  set("_headers", assetHeaders(property));
+  set("_headers", assetHeaders(property, enriched));
   const indexNowKey = property.distribution?.indexNow?.key;
   if (indexNowKey != null) {
     if (typeof indexNowKey !== "string" || !/^[A-Za-z0-9-]{8,128}$/u.test(indexNowKey)) {
@@ -743,7 +754,7 @@ export function buildProperty({ property, contentDir, outputDir, claimStoreDir, 
   for (const post of enriched) {
     for (const media of post.mediaFiles) {
       if (files.has(media.path) && !Buffer.from(files.get(media.path)).equals(media.bytes))
-        throw new Error("Selected publication image has conflicting bytes");
+        throw new Error("Selected publication asset has conflicting bytes");
       set(media.path, media.bytes);
     }
     if (post.image === `/assets/article-art/${post.slug}.svg`) {

@@ -9,6 +9,7 @@
 import { escapeHtml } from "./markdown.mjs";
 import { socialMetaTags as pageSocialMetaTags, webAppManifest } from "@red-cup-engineering/html-engineering-services-section/page-metadata";
 import { creativeWork, organization, renderJsonLdScript } from "@red-cup-engineering/computer-triplet-serialized-content-engineering-services-section/schema-org";
+import { publicationMediaJsonLd } from "./media.mjs";
 
 /**
  * @param {string} origin absolute origin, e.g. "https://koios.news"
@@ -68,6 +69,7 @@ function imageObject(image) {
  * @param {string} input.url
  * @param {string} [input.image] absolute image URL
  * @param {{url:string,width?:number,height?:number,creditText?:string}[]} [input.images] Selected article images; wins over `image`
+ * @param {object[]} [input.media] Received AudioObject/VideoObject records and their byte-bound caption records
  * @param {string} input.datePublished ISO 8601 instant with zone
  * @param {string} input.dateModified ISO 8601 instant with zone
  * @param {{name:string,url?:string,type?:string,jobTitle?:string,description?:string,sameAs?:string[]}} input.author
@@ -103,6 +105,7 @@ export function newsArticleJsonLd(input) {
     },
     publisher: { "@type": "Organization", ...(input.publisher.id ? { "@id": input.publisher.id } : {}), name: input.publisher.name, url: input.publisher.url, ...(logo ? { logo: imageObject(logo) } : {}) },
     ...(input.images?.length ? { image: input.images.map(imageObject) } : {}),
+    ...publicationMediaJsonLd(input.media, input.url),
     // Identifiers and rights are projections of already-admitted editorial data,
     // not newly inferred licenses or subscription requirements.
     mainEntityOfPage: { "@type": "WebPage", "@id": input.url },

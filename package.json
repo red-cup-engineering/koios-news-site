@@ -46,7 +46,7 @@
   "packageManager": "pnpm@11.28.5",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/causeway-services/koios-news-site.git"
+    "url": "git+https://github.com/red-cup-engineering/koios-news-site.git"
   },
   "files": [
     "pnpm-workspace.yaml",

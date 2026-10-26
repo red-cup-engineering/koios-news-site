@@ -1,10 +1,11 @@
 /** @module images -- news-property image domain: OG card composition, hero prompts, per-article image custody. */
 
 import { mkdir, writeFile, access } from "node:fs/promises";
-import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import path from "node:path";
 import sharp from "sharp";
+import { readPublicationAsset } from "./publication-assets.mjs";
 
 const OG_WIDTH = 1200;
 const OG_HEIGHT = 630;
@@ -179,25 +180,13 @@ export async function composeOgCard({ out, ...options }) {
   return { path: out, width, height };
 }
 
-const rasterPath = /\.(?:png|jpe?g|webp|avif)$/iu;
 const hash = value => createHash("sha256").update(value).digest("hex");
 
 /** Receive an existing public image from the publication's own content root.
  * No URL is fetched and no unselected content directory is copied to the site.
  */
 export function readPublicationImage(value, { origin, contentRoot }) {
-  const refuse = () => { throw new TypeError("Publication images require an existing same-origin raster asset inside /assets/"); };
-  if (typeof value !== "string" || !value || /[\\\s\u0000-\u001f\u007f%]/u.test(value)) refuse();
-  let url, home;
-  try { home = new URL(origin); url = new URL(value, home); } catch { refuse(); }
-  if (home.protocol !== "https:" || url.origin !== home.origin || url.protocol !== "https:" ||
-      url.username || url.password || url.search || url.hash || !url.pathname.startsWith("/assets/") ||
-      !rasterPath.test(url.pathname) || value.split("/").some(part => part === "." || part === "..")) refuse();
-  const root = realpathSync(contentRoot), relativePath = url.pathname.slice(1), target = path.resolve(root, relativePath);
-  if (!existsSync(target)) refuse();
-  const actual = realpathSync(target), relative = path.relative(root, actual);
-  if (!relative || relative === ".." || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative) || !statSync(actual).isFile()) refuse();
-  return Object.freeze({ path: relativePath, url: url.href, bytes: readFileSync(actual) });
+  return readPublicationAsset(value, { origin, contentRoot, extensions: ["png", "jpg", "jpeg", "webp", "avif"], label: "Publication images", kind: "raster asset" });
 }
 
 /** Select existing editorial media; fingerprint marks remain provenance assets. */

@@ -66,6 +66,22 @@ test("publisher discovery returns a reusable typed report with explicit uncertai
   assert.equal(Object.keys(result.observations).length, 9);
 });
 
+test("primary-heading observation detects the live homepage gap without inventing an indexing failure", async () => {
+  const missing = await run();
+  assert.equal(finding(missing, "home-primary-heading").state, "fail");
+  assert.equal(finding(missing, "home-primary-heading").critical, false);
+  assert.equal(missing.decision.technicalDiscoverySampleReady, true);
+  const present = await run({ "/": home + '<main><h1><a href="/posts/proven-story/">Proven story</a></h1></main>' });
+  assert.equal(finding(present, "home-primary-heading").state, "pass");
+  assert.equal(finding(present, "home-primary-heading").evidence.count, 1);
+  const empty = await run({ "/": home + '<h1>  <span></span> </h1>' });
+  assert.equal(finding(empty, "home-primary-heading").state, "fail");
+  const inert = await run({ "/": home + '<!-- <h1>Comment</h1> --><script>"<h1>Script</h1>"</script><template><h1>Template</h1></template>' });
+  assert.equal(finding(inert, "home-primary-heading").state, "fail");
+  const unobserved = await run({ "/": new Error("Provider unobservable") });
+  assert.equal(finding(unobserved, "home-primary-heading").state, "unknown");
+});
+
 test("public homepage and article identify one source-owned publisher; mere Organization is insufficient", async () => {
   const publisherId = origin + "/#publisher";
   const publisher = { "@context":"https://schema.org", "@type":"NewsMediaOrganization",

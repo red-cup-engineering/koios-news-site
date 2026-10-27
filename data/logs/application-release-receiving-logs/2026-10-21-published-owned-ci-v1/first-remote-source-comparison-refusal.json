@@ -1,7 +1,0 @@
-{
-  "kind": "ReceiverDirectorySHAComparisonRefusal",
-  "firstReadOnlyAttempt": true,
-  "sourceEffects": false,
-  "finding": "Recursive tree comparison included ancestor directory SHA rows. Those necessarily change for two child edits; compare all leaves and gitlinks, then separately receive root tree. Original candidate bytes unchanged.",
-  "retainedFailure": "not exact two-source union"
-}

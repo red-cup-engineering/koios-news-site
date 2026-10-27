@@ -1,9 +1,0 @@
-{
-  "exitCode": 1,
-  "phase": "repositoryscope BEFORE branch/admission/effect",
-  "reason": "root mistakenly assumed public; originalactualrepository isprivate",
-  "actualRepositoryId": 1408904976,
-  "actualFullName": "causeway-services/koios.news",
-  "nativeEffectsAttempted": false,
-  "correction": "v2 requires actual private owner; selected2sourcepaths excluded fromallautomaticprivateworkflowtriggers"
-}

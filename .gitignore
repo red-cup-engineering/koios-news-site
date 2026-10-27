@@ -4,3 +4,5 @@ node_modules/
 
 # Independently pinned build suppliers; never commit their implementation here.
 .sources/
+data/logs/
+data/state/

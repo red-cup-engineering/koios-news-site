@@ -1,9 +1,0 @@
-{
-  "prerequisite": "https://registry.561.group/@red-cup-engineering%2Fwsl-host-service/0.2.0",
-  "versionSHA256": "459d34148437961eb5d6515e4dfda74d14976be4acbb19304f2e815e70c6de42",
-  "run": 39678446509,
-  "effect": "ONE original failed public job rerun after observed registry recovery",
-  "exitCode": 0,
-  "stdout": "",
-  "stderr": ""
-}

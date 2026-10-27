@@ -12,8 +12,8 @@ importers:
   .:
     dependencies:
       '@red-cup-engineering/computer-serialized-content-engineering-services-section':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 0.2.2
+        version: 0.2.2
       '@red-cup-engineering/computer-text-content-engineering-services-section':
         specifier: 0.1.0
         version: 0.1.0
@@ -654,6 +654,9 @@ packages:
 
   '@red-cup-engineering/computer-serialized-content-engineering-services-section@0.1.0':
     resolution: {integrity: sha512-8IdUOmrtF6wuc0l2ZnGN4QmiA+Xjx/FypjeZ4GIRBTbRb+rp4uQtBunmb1Bnqzz8c+/Ywm7+XvEOoT/akGol8g==}
+
+  '@red-cup-engineering/computer-serialized-content-engineering-services-section@0.2.2':
+    resolution: {integrity: sha512-VWs25LsgNfF2H+feXhhBYTUBMQfgj2UipMcu7A7cECcYTI0ufC88UDeDEA54+Q5AefMF+ZESQXUwEvanZYS9og==}
 
   '@red-cup-engineering/computer-text-content-engineering-services-section@0.1.0':
     resolution: {integrity: sha512-1sR6cPKd754th7xbQWaM2FFZ9MrOF1Sxkt+RLlVN0/QpvNkMZigUFLOTaQyIL+jzn8SGbD5cNZwUwCzXtVjjzg==}
@@ -1411,6 +1414,14 @@ snapshots:
       '@red-cup-engineering/json-services-section': 0.4.0
 
   '@red-cup-engineering/computer-serialized-content-engineering-services-section@0.1.0':
+    dependencies:
+      '@red-cup-engineering/json-services-section': 0.4.0
+      '@red-cup-engineering/uri-services-section': 0.1.1
+      '@scure/base': 2.4.0
+      http-structured-fields: 1.0.0
+      whatwg-mimetype: 5.0.0
+
+  '@red-cup-engineering/computer-serialized-content-engineering-services-section@0.2.2':
     dependencies:
       '@red-cup-engineering/json-services-section': 0.4.0
       '@red-cup-engineering/uri-services-section': 0.1.1

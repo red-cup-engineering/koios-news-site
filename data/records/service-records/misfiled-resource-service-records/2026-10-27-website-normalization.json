@@ -1,0 +1,106 @@
+{
+  "id": "2026-10-27-website-normalization",
+  "kind": "misfiled-resources-register",
+  "by": "apply-services-section-normalization",
+  "date": "2026-10-27",
+  "moved": [
+    {
+      "from": "data/records/newswire-receiving-records/2026-10-21-actual-owned-ci-and-source-integration.json",
+      "to": "data/records/service-records/newswire-receiving-service-records/2026-10-21-actual-owned-ci-and-source-integration.json",
+      "rule": "eavt-data-law",
+      "sourceSha256": "a7638683ab494345adca9908d9890491f63b9c1b6e0f10961d59578788450012",
+      "destinationSha256": "a7638683ab494345adca9908d9890491f63b9c1b6e0f10961d59578788450012",
+      "byteIdentical": true
+    },
+    {
+      "from": "data/records/newswire-receiving-records/2026-10-21-ninjs-artifact-metadata.json",
+      "to": "data/records/service-records/newswire-receiving-service-records/2026-10-21-ninjs-artifact-metadata.json",
+      "rule": "eavt-data-law",
+      "sourceSha256": "a0c66e31c9b0df1b7d3824d8d468c10c298de83b7799b7d0f8abf720903f6372",
+      "destinationSha256": "a0c66e31c9b0df1b7d3824d8d468c10c298de83b7799b7d0f8abf720903f6372",
+      "byteIdentical": true
+    },
+    {
+      "from": "data/records/newswire-receiving-records/2026-10-21-owned-ci-successor-source-review.json",
+      "to": "data/records/service-records/newswire-receiving-service-records/2026-10-21-owned-ci-successor-source-review.json",
+      "rule": "eavt-data-law",
+      "sourceSha256": "8b054b499e8b361eb9f646ce602076ca1fbf0d74a878a7e183e4eeec75fb3e9a",
+      "destinationSha256": "8b054b499e8b361eb9f646ce602076ca1fbf0d74a878a7e183e4eeec75fb3e9a",
+      "byteIdentical": true
+    },
+    {
+      "from": "data/records/newswire-receiving-records/2026-10-21-pr2-owned-ci-source-review-v1.json",
+      "to": "data/records/service-records/newswire-receiving-service-records/2026-10-21-pr2-owned-ci-source-review-v1.json",
+      "rule": "eavt-data-law",
+      "sourceSha256": "8f45b6317a74c0dd9b995f2c8c88b05bf7eec49a7ad72afe87e5b086469e07e4",
+      "destinationSha256": "8f45b6317a74c0dd9b995f2c8c88b05bf7eec49a7ad72afe87e5b086469e07e4",
+      "byteIdentical": true
+    },
+    {
+      "from": "data/records/newswire-receiving-records/2026-10-21-pr2-owned-ci-source-review-v2.json",
+      "to": "data/records/service-records/newswire-receiving-service-records/2026-10-21-pr2-owned-ci-source-review-v2.json",
+      "rule": "eavt-data-law",
+      "sourceSha256": "7f768819aee3bf334d2547c54c19424a2afcb7daf9bd207dd90c1cc8aea6e5e3",
+      "destinationSha256": "7f768819aee3bf334d2547c54c19424a2afcb7daf9bd207dd90c1cc8aea6e5e3",
+      "byteIdentical": true
+    },
+    {
+      "from": "data/records/newswire-receiving-records/2026-10-21-pr2-owned-ci-source-review-v3.json",
+      "to": "data/records/service-records/newswire-receiving-service-records/2026-10-21-pr2-owned-ci-source-review-v3.json",
+      "rule": "eavt-data-law",
+      "sourceSha256": "e6603aa485b991e887eebc4622a161fa27f07d8b5e57be52179a21fc3bee8f68",
+      "destinationSha256": "e6603aa485b991e887eebc4622a161fa27f07d8b5e57be52179a21fc3bee8f68",
+      "byteIdentical": true
+    }
+  ],
+  "owed": [
+    {
+      "rule": "stray-top-level",
+      "reason": ".npmrc/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": ".",
+      "count": 1
+    },
+    {
+      "rule": "stray-top-level",
+      "reason": "LICENSE/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": ".",
+      "count": 1
+    },
+    {
+      "rule": "stray-top-level",
+      "reason": "NOTICE/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": ".",
+      "count": 1
+    },
+    {
+      "rule": "stray-top-level",
+      "reason": "PUBLICATION-BUILD.md/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": ".",
+      "count": 1
+    },
+    {
+      "rule": "stray-top-level",
+      "reason": "pnpm-lock.yaml/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": ".",
+      "count": 1
+    },
+    {
+      "rule": "stray-top-level",
+      "reason": "pnpm-workspace.yaml/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": ".",
+      "count": 1
+    },
+    {
+      "rule": "stray-top-level",
+      "reason": "release/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": "release",
+      "count": 3
+    },
+    {
+      "rule": "stray-top-level",
+      "reason": "specifications/ is not an entry the services-section law knows; its owner decides where it belongs",
+      "directory": "specifications",
+      "count": 2
+    }
+  ]
+}

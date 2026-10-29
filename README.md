@@ -51,6 +51,30 @@ From this repository, the dependency-free operation is:
     node --test test/discovery-audit.test.mjs
     node scripts/audit-discovery.mjs https://koios.news --strict --daily-article-target=20
 
+The original Koios correction/help service additionally has an explicitly
+situated public-reader requirement: one named `Report a problem` anchor in
+the primary navigation, ordered before `Masthead`. Observe this on the
+**actual public homepage**, without any extra HTTP request or a guessed
+editor/custodian, by selecting the same source-owned requirement:
+
+```sh
+node scripts/audit-discovery.mjs https://koios.news --strict \
+  --daily-article-target=20 \
+  --reader-help-href=/corrections/#report-an-error \
+  --reader-help-label='Report a problem' \
+  --reader-help-before=/masthead/
+```
+
+The existing scheduled production observer uses this same selection. It
+records the help-navigation result independently of news cadence and search
+eligibility; a missing link is not a proven WCAG violation, a screen-reader
+assessment, an installed editor, consented mailbox delivery, acknowledged
+report or a completed correction. The help check is **not** an unconditional
+requirement of the generic website or news publisher profile. It is only
+evaluated when all three source-owned arguments are supplied. W3C
+Understanding SC 3.2.6 concerns consistent placement *where help is
+repeated*, not an obligation to offer help on every site.
+
 For another publisher with the same news-property route conventions:
 
     node scripts/audit-discovery.mjs https://publisher.example --strict

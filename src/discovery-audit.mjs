@@ -11,6 +11,7 @@ const standards = Object.freeze({
   search: "https://developers.google.com/search/docs/appearance/ai-features",
   article: "https://developers.google.com/search/docs/appearance/structured-data/article",
   headings: "https://www.w3.org/WAI/tutorials/page-structure/headings/",
+  help: "https://www.w3.org/WAI/WCAG22/Understanding/consistent-help.html",
   sitemap: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview",
   news: "https://developers.google.com/search/docs/crawling-indexing/sitemaps/news-sitemap",
   crawl: "https://developers.cloudflare.com/ai-crawl-control/features/pay-per-crawl/what-is-pay-per-crawl/",
@@ -125,6 +126,48 @@ function equalUrl(actual, expected) {
   try { return new URL(actual).href === new URL(expected).href; } catch { return false; }
 }
 
+/** Bounded source-HTML reading of an expressly requested reader-help journey.
+ * Reuses the original homepage GET; no crawl, DOM, screen-reader or mailbox
+ * evidence follows. Help is never mandatory without a source-owned request. */
+export function inspectReaderHelp(html, origin, { href, label, before } = {}) {
+  const qualified = value => {
+    if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//") ||
+        /\s/u.test(value)) throw new TypeError("reader help needs one local path");
+    const url = new URL(value, origin + "/");
+    if (url.origin !== origin || url.username || url.password || url.search)
+      throw new TypeError("reader help path must stay on the publication origin");
+    return url.href;
+  };
+  const requested = qualified(href), preceding = qualified(before);
+  if (typeof label !== "string" || !label.trim() || label.length > 128)
+    throw new TypeError("reader help needs one explicit human-facing label");
+  if (typeof html !== "string") throw new TypeError("reader help needs HTML bytes");
+  const active = html.replace(/<!--[\s\S]*?-->/gu, "")
+    .replace(/<(script|style|template)\b[^>]*>[\s\S]*?<\/\1\s*>/giu, "");
+  const primary = [...active.matchAll(/<nav\b([^>]*)>([\s\S]*?)<\/nav\s*>/giu)]
+    .filter(([,attrs]) => attribute(attrs,"aria-label")?.toLowerCase() === "primary");
+  const anchors = primary.flatMap(([, , body]) =>
+    [...body.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a\s*>/giu)].map(([,attrs,body]) => {
+      const target = attribute(attrs,"href");
+      let url = null;
+      try { if (target) url = new URL(target.replaceAll("&amp;","&"),origin + "/").href; }
+      catch { /* malformed href cannot count as a public link */ }
+      const visible = body.replace(/<[^>]*>/gu," ").replace(/\s+/gu," ").trim();
+      return { url, accessible: attribute(attrs,"aria-label") ?? visible };
+    }));
+  const selected = anchors.map((link,index) => ({...link,index}))
+    .filter(link => link.url === requested);
+  const predecessor = anchors.findIndex(link => link.url === preceding);
+  const linked = primary.length === 1 && selected.length === 1 &&
+    selected[0].accessible === label && predecessor > selected[0].index;
+  return { linked, expected: requested, primaryLandmarks: primary.length,
+    matchingLinks: selected.length, rightLabel: selected.length === 1 &&
+      selected[0].accessible === label,
+    beforeDeclared: predecessor >= 0, correctlyOrdered: selected.length === 1 &&
+      predecessor > selected[0].index,
+    qualification: "sampled HTML link and source-order only; not WCAG, keyboard, assistive-tech, transport or editorial intake" };
+}
+
 /** An entity fragment on the canonical homepage; an off-site @id is not
  * evidence that this publisher owns the claimed URL. */
 function homeEntityId(value, origin) {
@@ -225,12 +268,15 @@ export function inspectArticle(html) {
   };
 }
 
-export async function auditDiscovery({ origin, fetchImpl = fetch, observedAt = new Date(), articleUrl, profile = "news", dailyArticleTarget } = {}) {
+export async function auditDiscovery({ origin, fetchImpl = fetch, observedAt = new Date(), articleUrl, profile = "news", dailyArticleTarget, readerHelp = null } = {}) {
   if(dailyArticleTarget!==undefined&&(!Number.isSafeInteger(dailyArticleTarget)||dailyArticleTarget<1||profile!=="news"))
     throw new TypeError("dailyArticleTarget is a positive integer for the news profile only");
   if (!["news", "website"].includes(profile)) throw new TypeError("discovery profile must be news or website");
   const newsProfile = profile === "news";
   const site = bareOrigin(origin);
+  // A site chooses its own reachable help contract; there is no default
+  // language, universally required contact channel or assumed help URL.
+  if (readerHelp !== null) inspectReaderHelp("",site,readerHelp);
   if (typeof fetchImpl !== "function") throw new TypeError("fetchImpl must be a function");
   if (!(observedAt instanceof Date) || !Number.isFinite(observedAt.getTime())) throw new TypeError("invalid observedAt");
   const results = {};
@@ -296,6 +342,18 @@ export async function auditDiscovery({ origin, fetchImpl = fetch, observedAt = n
   record("home-primary-heading", stateIf("home", primaryHeadings.length > 0),
     "Home declares a nonempty primary heading for its content; source markup alone does not prove accessibility or search placement",
     "headings", { count: primaryHeadings.length });
+  let readerHelpResult = { status:"not-assessed", reason:"not-requested" };
+  if (readerHelp !== null) {
+    const inspected = results.home.status === 200
+      ? inspectReaderHelp(results.home.body,site,readerHelp) : null;
+    const state = results.home.status !== 200 ? "unknown" : inspected.linked ? "pass" : "fail";
+    readerHelpResult = {status:state, expected:new URL(readerHelp.href,site).href,
+      ...(inspected ? {inspection:inspected} : {reason:"public-homepage-unreceived"})};
+    record("reader-help-navigation",state,
+      "The requested local reader-help link appears once in primary navigation, with its source-owned label and relative order",
+      "help",inspected ?? {expected:readerHelpResult.expected},
+      false);
+  }
   const homeLd = jsonLd(results.home.body);
   const hasOrganization = homeLd.objects.some((item) =>
     isType(item, "NewsMediaOrganization") || isType(item, "Organization"));
@@ -409,13 +467,14 @@ export async function auditDiscovery({ origin, fetchImpl = fetch, observedAt = n
     standards, observations, findings,
     decision: { technicalDiscoverySampleReady: criticalFailures.length === 0 && criticalUnknowns.length === 0,
       payPerCrawlEligible: "unverified", searchPlacementProven: false, agentCitationProven: false,
-      publicationCadence, criticalFailures, criticalUnknowns },
+      publicationCadence, readerHelp:readerHelpResult, criticalFailures, criticalUnknowns },
     limitations: [
       "An HTML audit cannot prove indexing, ranking, Google News inclusion, Bing citations or crawler payment.",
       "An ordinary HTTP user agent cannot establish authenticated bot or WAF behavior.",
       "This is a sampled external audit, not a full-site, account-level or contract-rights assessment.",
       "The news profile applies additional publisher-specific route and attribution obligations; website mode never treats a missing news sitemap, feed, or masthead as an indexing failure.",
       "A publisher-defined daily cadence is separate from technical crawl eligibility; a news sitemap only advertises URLs, never proves signed editorial acceptance or actual article delivery.",
+      "A selected source-HTML reader-help link is not proof of human acknowledgement, keyboard traversal, screen-reader usability or WCAG conformance.",
     ],
   });
 }

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { auditDiscovery, inspectArticle, inspectPublisherGraph } from "../src/discovery-audit.mjs";
+import { auditDiscovery, inspectArticle, inspectPublisherGraph, inspectReaderHelp } from "../src/discovery-audit.mjs";
 
 const origin = "https://koios.news";
 const articleUrl = origin + "/posts/proven-story/";
@@ -80,6 +80,86 @@ test("primary-heading observation detects the live homepage gap without inventin
   assert.equal(finding(inert, "home-primary-heading").state, "fail");
   const unobserved = await run({ "/": new Error("Provider unobservable") });
   assert.equal(finding(unobserved, "home-primary-heading").state, "unknown");
+});
+
+test("explicit Koios primary reader-help contract is observed from the same homepage without a new HTTP probe",async()=>{
+  const readerHelp={href:"/corrections/#report-an-error",label:"Report a problem",before:"/masthead/"};
+  const primary='<nav aria-label="Primary"><a href="/search/">Search</a>' +
+    '<a href="/corrections/#report-an-error">Report a problem</a>' +
+    '<a href="/masthead/">Masthead</a></nav>';
+  const visits=[];
+  const fetchImpl=async(url,options)=>{visits.push(new URL(url).pathname);
+    return fakeFetch({"/":home+primary})(url,options);};
+  const valid=await auditDiscovery({origin,readerHelp,fetchImpl,observedAt:new Date("2026-10-29T21:00:00Z")});
+  assert.equal(valid.decision.readerHelp.status,"pass");
+  const reading=finding(valid,"reader-help-navigation");
+  assert.equal(reading.state,"pass");
+  assert.equal(reading.evidence.matchingLinks,1);
+  assert.equal(reading.evidence.correctlyOrdered,true);
+  assert.equal(reading.critical,false,"reader help is distinct from indexability");
+  assert.equal(valid.decision.technicalDiscoverySampleReady,true);
+  assert.equal(visits.filter(path=>path==="/").length,1,"the original home GET is reused");
+
+  const missed=await run({}, {readerHelp});
+  assert.equal(finding(missed,"reader-help-navigation").state,"fail");
+  assert.equal(missed.decision.readerHelp.status,"fail");
+  assert.equal(missed.decision.technicalDiscoverySampleReady,true,
+    "uninstalled help navigation is not a fabricated indexing failure");
+  const unrequested=await run();
+  assert.equal(finding(unrequested,"reader-help-navigation"),undefined);
+  assert.equal(unrequested.decision.readerHelp.status,"not-assessed");
+});
+
+test("false, duplicated, inconsistent and inert help URLs cannot qualify public help",async()=>{
+  const config={href:"/corrections/#report-an-error",label:"Report a problem",before:"/masthead/"};
+  const good='<nav aria-label="Primary">' +
+    '<a href="/search/">Search</a>' +
+    '<a href="/corrections/#report-an-error">Report a problem</a>' +
+    '<a href="/masthead/">Masthead</a></nav>';
+  assert.equal(inspectReaderHelp(good,origin,config).linked,true);
+  const controls=[
+    good.replace('>Report a problem</a>','>Contact the newsroom</a>'),
+    good.replace('href="/corrections/#report-an-error"','href="https://other.example/corrections/#report-an-error"'),
+    good.replace('href="/corrections/#report-an-error"','href="/corrections/#incorrect"'),
+    good.replace('<a href="/masthead/">Masthead</a>','') + '<a href="/masthead/">Masthead</a>',
+    good.replace('<a href="/corrections/#report-an-error">Report a problem</a>','') +
+      '<a href="/corrections/#report-an-error">Report a problem</a>',
+    good.replace('<a href="/masthead/">Masthead</a>',
+      '<a href="/corrections/#report-an-error">Report a problem</a><a href="/masthead/">Masthead</a>'),
+    good.replace('aria-label="Primary"','aria-label="Footer"'),
+    '<!--'+good+'-->',
+    '<template>'+good+'</template>',
+    good.replace('>Report a problem</a>',' aria-label="Unrelated task">Report a problem</a>'),
+  ];
+  for(const [index,html]of controls.entries()){
+    const observed=inspectReaderHelp(html,origin,config);
+    assert.equal(observed.linked,false,"control "+index+" must refuse");
+    const report=await run({"/":home+html},{readerHelp:config});
+    assert.equal(finding(report,"reader-help-navigation").state,"fail","control "+index);
+  }
+});
+
+test("public help admission rejects foreign, ambiguous and partially declared requirements",async()=>{
+  const good={href:"/corrections/#report-an-error",label:"Report a problem",before:"/masthead/"};
+  for(const bad of [
+    {...good,href:"https://other.example/corrections/#report-an-error"},
+    {...good,href:"//other.example/corrections/#report-an-error"},
+    {...good,href:"/corrections/?token=secret#report-an-error"},
+    {...good,before:"/masthead/?next=/private"},
+    {...good,label:""},
+    {...good,label:"x".repeat(129)},
+    {href:good.href,label:good.label},
+  ]){
+    await assert.rejects(run({}, {readerHelp:bad}), /reader help/u);
+  }
+  const unknown=await run({"/":new Error("Homepage unavailable")},{readerHelp:good});
+  assert.equal(finding(unknown,"reader-help-navigation").state,"unknown");
+  assert.equal(unknown.decision.readerHelp.status,"unknown");
+  const siteMode=await run({"/":home+
+    '<nav aria-label="Primary"><a href="/corrections/#report-an-error">Report a problem</a><a href="/masthead/">Masthead</a></nav>'},
+    {profile:"website",readerHelp:good});
+  assert.equal(siteMode.decision.readerHelp.status,"pass",
+    "explicit requirements are situated; the generic website profile has no invented Koios default");
 });
 
 test("public homepage and article identify one source-owned publisher; mere Organization is insufficient", async () => {

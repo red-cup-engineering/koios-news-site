@@ -49,7 +49,12 @@ jobs:
         run: |
           set -euo pipefail
           assessment_status=0
-          node scripts/audit-discovery.mjs https://koios.news --strict --daily-article-target=20 > "$RUNNER_TEMP/assessment.json" || assessment_status=$?
+          # The original Koios #16 source-accepted help link is a distinct
+          # reader obligation; re-read public homepage bytes, not renderer code.
+          node scripts/audit-discovery.mjs https://koios.news --strict --daily-article-target=20 \
+            --reader-help-href=/corrections/#report-an-error \
+            --reader-help-label='Report a problem' \
+            --reader-help-before=/masthead/ > "$RUNNER_TEMP/assessment.json" || assessment_status=$?
           if [[ ! -s "$RUNNER_TEMP/assessment.json" ]]; then
             printf '%s\n' 'Discovery assessment produced no JSON; inspect assessor stderr.' >&2
             if (( assessment_status == 0 )); then exit 70; fi
@@ -68,6 +73,8 @@ jobs:
           console.log("Actual sampled article publisher identity:", JSON.stringify(report.findings.find(f => f.id === "article-publisher-linkage") ?? null));
           console.log("Source merge is not publication; fail and unverified states remain until a live original release is independently read back.");
           console.log("Publisher-declared NEW-article cadence:", JSON.stringify(report.decision.publicationCadence));
+          console.log("Source-selected public reader-help navigation (not a screen-reader or mailbox assay):",
+            JSON.stringify(report.decision.readerHelp));
           console.log("A news sitemap alone cannot prove article delivery or editorial approval.");
           console.log("Cloudflare Pay Per Crawl:", report.decision.payPerCrawlEligible);
           console.log("Actual search placement proven:", report.decision.searchPlacementProven);

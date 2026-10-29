@@ -67,8 +67,8 @@ export function documentTitle(headline, siteName, limit = 60) {
 }
 
 /**
- * Render the primary navigation: the property's sections, plus Search and
- * Masthead.
+ * Render the primary navigation: the property's sections, plus a direct
+ * reader-remedy entrance and the established discovery/identity pages.
  * @param {object} property
  * @param {string} [activeSlug]
  * @returns {string}
@@ -76,7 +76,8 @@ export function documentTitle(headline, siteName, limit = 60) {
 function primaryNav(property, activeSlug) {
   const items = (property.sections ?? []).map((section) =>
     `<a href="/sections/${esc(section.slug)}/"${section.slug === activeSlug ? ' aria-current="page"' : ""}>${esc(section.title)}</a>`);
-  items.push('<a href="/topics/">Topics</a>', '<a href="/tags/">Tags</a>', '<a href="/search/">Search</a>', '<a href="/masthead/">Masthead</a>');
+  items.push('<a href="/topics/">Topics</a>', '<a href="/tags/">Tags</a>', '<a href="/search/">Search</a>',
+    '<a href="/corrections/#report-an-error">Report a problem</a>', '<a href="/masthead/">Masthead</a>');
   if (property.content?.claimStore) items.push('<a href="/wire/">The wire</a>', '<a href="/claims/">Claims</a>');
   return `<nav aria-label="Primary">${items.join("")}</nav>`;
 }

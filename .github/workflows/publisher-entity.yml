@@ -23,8 +23,10 @@ on:
       - 'test/correction-intake.test.mjs'
       - 'test/corrections-http-receiving.test.mjs'
       - 'package.json'
+      - '.npmrc'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
+      - 'test/registry-routing.test.mjs'
       - '.github/workflows/publisher-entity.yml'
   push:
     branches: [main]
@@ -50,8 +52,10 @@ on:
       - 'test/correction-intake.test.mjs'
       - 'test/corrections-http-receiving.test.mjs'
       - 'package.json'
+      - '.npmrc'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
+      - 'test/registry-routing.test.mjs'
       - '.github/workflows/publisher-entity.yml'
 permissions:
   contents: read
@@ -111,11 +115,12 @@ jobs:
           node --check scripts/verify-corrections-receiving.mjs
           node --check test/correction-intake.test.mjs
           node --check test/corrections-http-receiving.test.mjs
+          node --check test/registry-routing.test.mjs
       # Native standard-library receiving must still run when our registry is unavailable.
       # Full publisher qualification below remains mandatory for release.
-      - name: Receive corrections intake, privacy refusals and negative cases without registry
+      - name: Receive original correction and public/private registry admission without registry
         timeout-minutes: 2
-        run: node --test test/correction-intake.test.mjs test/corrections-http-receiving.test.mjs
+        run: node --test test/correction-intake.test.mjs test/corrections-http-receiving.test.mjs test/registry-routing.test.mjs
       - name: Install original declared dependencies without substituting fixtures
         timeout-minutes: 5
         run: |

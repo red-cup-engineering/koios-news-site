@@ -60,6 +60,29 @@ test("the shared skip link targets one programmatically focusable main landmark 
   }
 });
 
+test("public pages offer one stable primary-navigation link to the existing reader remedy", () => {
+  const { scratch, outputDir } = buildFixture();
+  try {
+    const remedy = '<a href="/corrections/#report-an-error">Report a problem</a>';
+    for (const relative of ["index.html", "about/index.html", "standards/index.html", "corrections/index.html"]) {
+      const html = readFileSync(join(outputDir, relative), "utf8");
+      const primary = /<nav aria-label="Primary">([\s\S]*?)<\/nav>/u.exec(html)?.[1];
+      assert.ok(primary, relative + ": missing landmark-labelled primary navigation");
+      assert.equal(primary.split(remedy).length - 1, 1,
+        relative + ": help must be a single direct link in primary navigation");
+      assert.ok(primary.indexOf(remedy) < primary.indexOf('<a href="/masthead/">Masthead</a>'),
+        relative + ": help link moved relative to the masthead");
+    }
+    const corrections = readFileSync(join(outputDir, "corrections", "index.html"), "utf8");
+    assert.match(corrections, /id="report-an-error"/u,
+      "the shared help link must resolve to the existing public intake instructions");
+    assert.match(corrections, /accessibility barrier/u,
+      "the target must continue to offer accessibility reports as well as factual corrections");
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
+});
+
 test("withdrawn article notices retain accessible focus, noindex, canonical address and no advertising", () => {
   const scratch = mkdtempSync(join(tmpdir(), "news-property-withdrawn-assurance-"));
   const contentDir = join(scratch, "content");

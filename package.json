@@ -1,5 +1,5 @@
 {
-  "name": "@causeway-services/koios-news-site",
+  "name": "@red-cup-engineering/koios-news-site-engine",
   "version": "0.1.11",
   "private": false,
   "type": "module",
@@ -46,7 +46,7 @@
   "packageManager": "pnpm@11.28.5",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/red-cup-engineering/koios-news-site.git"
+    "url": "git+https://github.com/red-cup-engineering/koios-news-site-engine.git"
   },
   "files": [
     "pnpm-workspace.yaml",

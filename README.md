@@ -1,4 +1,6 @@
-# Koios.News website
+# koios-news-site-engine
+
+The koios-news-site-engine app is an application of the computer-koios-news-media-systems-engineering-services-section: the Koios.News public website, built from the parent service section's publication inputs.
 
 <!-- 561-group-standards:badges:start -->
 [![Causeway Services](https://img.shields.io/badge/561%20Group-Causeway%20Services-115e69)](https://github.com/causeway-services)
@@ -7,7 +9,7 @@
 [![Tips welcome](https://img.shields.io/badge/tips-welcome-d4a017)](https://github.com/561-group/.github/blob/main/TIPS.md)
 <!-- 561-group-standards:badges:end -->
 
-`@causeway-services/koios-news-site` is the **original Koios.News public
+`@red-cup-engineering/koios-news-site-engine` is the **original Koios.News public
 website renderer and guarded Cloudflare release carrier**. Its current,
 writable publishing application is
 [causeway-services/koios.news](https://github.com/causeway-services/koios.news),
